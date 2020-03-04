@@ -1,17 +1,29 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Tab 2
-    </ion-title>
+    <ion-title size="medium" class="ion-text-center">Yêu Thích</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <ion-grid>
+    <ion-row *ngFor="let combo of dummyArray; index as i">
+      <ion-col size=4 offset=1>
+        <ion-card>
+          <img [src]="loadedFavCombos[i*2].imgUrl">
+          <ion-card-header>
+            <ion-card-title> {{ loadedFavCombos[i*2].title }}</ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+      <ion-col size=4 offset=1 *ngIf="loadedFavCombos[i*2+1]">
+        <ion-card>
+          <img [src]="loadedFavCombos[i*2+1].imgUrl">
+          <ion-card-header>
+            <ion-card-title> {{ loadedFavCombos[i*2+1].title }}</ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
 </ion-content>

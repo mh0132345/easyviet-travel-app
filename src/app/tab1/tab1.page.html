@@ -1,17 +1,53 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 1
-    </ion-title>
-  </ion-toolbar>
+  <ion-searchbar></ion-searchbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content padding>
+  <ion-grid>
+    <ion-row >
+      <ion-col offset="1">
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col color="primary" offset="1">
+        <ion-label color="primary">Combo voucher</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row >
+      <ion-col>
+        <ion-slides spaceBetween="-40" >
+          <ion-slide *ngFor="let combo of loadedCombos">
+            <ion-card>
+              <img [src]="combo.imgUrl">
+              <ion-card-header>
+                <ion-card-title> {{ combo.title }}</ion-card-title>
+                <ion-card-subtitle color="primary">{{ combo.price }}</ion-card-subtitle>
+              </ion-card-header>
+            </ion-card>
+          </ion-slide>
+        </ion-slides>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col color="primary" offset="1">
+        <ion-label color="primary">Tin du lịch</ion-label>
+      </ion-col>
+    </ion-row>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+    <ion-row>
+      <ion-col>
+        <ion-slides spaceBetween="-40">
+          <ion-slide *ngFor="let article of loadedArticles">
+            <ion-card>
+              <img [src]="article.imgUrl">
+              <ion-card-header>
+                <ion-card-title> {{ article.title }}</ion-card-title>
+              </ion-card-header>
+            </ion-card>
+          </ion-slide>
+        </ion-slides>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
 </ion-content>
