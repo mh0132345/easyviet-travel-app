@@ -7,5 +7,7 @@ export class Combo {
     public price: number,
     public discount: number,
     public rate: number,
+    public startDest: string,
+    public travelDest: string,
   ) { }
 }

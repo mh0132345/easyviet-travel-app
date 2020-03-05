@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar class="ion-color" style.background="'url(' + article.imgUrl + ')'" >
+    <ion-buttons>
+      <ion-back-button icon="arrow-back-outline" slot="start"></ion-back-button>
+    </ion-buttons>
+      <ion-img [src]="article.imgUrl"></ion-img>
+      <ion-label class="ion-text-center"> {{ article.title }}</ion-label>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-text> {{ article.content }}</ion-text>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

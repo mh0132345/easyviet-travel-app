@@ -3,6 +3,7 @@ import { Combo } from './combo.model';
 import { ComboService } from './combo.service';
 import { Article } from './article.model';
 import { ArticleService } from './article.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab1',
@@ -22,4 +23,5 @@ export class Tab1Page implements OnInit {
     this.loadedCombos = this.comboService.combos;
     this.loadedArticles = this.articleService.articles;
   }
+
 }

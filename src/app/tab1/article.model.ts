@@ -4,5 +4,6 @@ export class Article {
       public id: string,
       public title: string,
       public imgUrl: string,
+      public content: string,
     ) { }
   }

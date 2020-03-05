@@ -17,7 +17,15 @@
       <ion-col>
         <ion-slides spaceBetween="-40" >
           <ion-slide *ngFor="let combo of loadedCombos">
-            <ion-card>
+            <ion-card
+              button="true" 
+              [routerLink]="[
+                '/',
+                'tabs',
+                'tab1',
+                'combo-detail',
+                combo.id
+              ]">
               <img [src]="combo.imgUrl">
               <ion-card-header>
                 <ion-card-title> {{ combo.title }}</ion-card-title>
@@ -38,10 +46,18 @@
       <ion-col>
         <ion-slides spaceBetween="-40">
           <ion-slide *ngFor="let article of loadedArticles">
-            <ion-card>
+            <ion-card 
+              button="true" 
+              [routerLink]="[
+                '/',
+                'tabs',
+                'tab1',
+                'article-detail',
+                article.id
+              ]">
               <img [src]="article.imgUrl">
-              <ion-card-header>
-                <ion-card-title> {{ article.title }}</ion-card-title>
+              <ion-card-header text-wrap>
+                <ion-card-title class="ion-text-wrap"> {{ article.title }}</ion-card-title>
               </ion-card-header>
             </ion-card>
           </ion-slide>

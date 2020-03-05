@@ -12,7 +12,9 @@ export class FavCombosService {
       'https://tour.dulichvietnam.com.vn/uploads/tour/1554713265_tour-ha-long-3.jpg',
       4000000,
       5,
-      4
+      4,
+      'Hà Nội',
+      'Hạ Long',
     ),
     new Combo(
       '2',
@@ -20,7 +22,9 @@ export class FavCombosService {
       'https://tour.dulichvietnam.com.vn/uploads/tour/1554713265_tour-ha-long-3.jpg',
       8000000,
       5,
-      4
+      4,
+      'Hà Nội',
+      'Hạ Long',
     ),
     new Combo(
       '3',
@@ -28,7 +32,9 @@ export class FavCombosService {
       'https://tour.dulichvietnam.com.vn/uploads/tour/1554713265_tour-ha-long-3.jpg',
       15000000,
       5,
-      4
+      4,
+      'Hà Nội',
+      'Hạ Long',
     )
   ];
   private favId: string[] = ['1', '2', '3'];
