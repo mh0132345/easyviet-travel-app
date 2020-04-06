@@ -9,9 +9,8 @@
 </ion-header>
 
 <ion-content>
-  
   <ion-slides #signupSlider>
-    <ion-slide>
+    <ion-slide *ngIf="viewEntered">
       <ion-grid>
         <ion-row>
           <ion-col>
@@ -21,7 +20,7 @@
         </ion-row>
         <ion-calendar
           [(ngModel)]="date"
-          (onChange)="onChange($event)"
+          (select)="onSelected($event)"
           [options]="options"
           [type]="type"
           [format]="'YYYY-MM-DD'">
@@ -46,7 +45,7 @@
           <form [formGroup]="slideOneForm">
             <ion-item>
               <ion-label position="floating">*Tên khách hàng</ion-label>
-              <ion-input formControlName="firstName" type="text"></ion-input>
+              <ion-input formControlName="name" type="text"></ion-input>
             </ion-item>
 
             <ion-item>
@@ -157,7 +156,7 @@
           <ion-label>Tổng tiền</ion-label>
         </ion-row>
         <ion-footer>
-          <ion-button (click)="next()">
+          <ion-button (click)="onBookCombo()">
             Thanh toán
           </ion-button>
         </ion-footer>

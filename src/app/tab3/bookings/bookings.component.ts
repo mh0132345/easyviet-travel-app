@@ -1,25 +1,31 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { CalendarComponentOptions, CalendarModalOptions } from 'ion2-calendar';
+import { CalendarModalOptions } from 'ion2-calendar';
+import { ActivatedRoute } from '@angular/router';
+import { NavController, ModalController, IonSlides } from '@ionic/angular';
+import { Combo } from '../../tab1/combo.model';
+import { ComboService } from '../../tab1/combo.service';
 
 @Component({
   selector: 'app-bookings',
-  templateUrl: './bookings.page.html',
-  styleUrls: ['./bookings.page.scss'],
+  templateUrl: './bookings.component.html',
+  styleUrls: ['./bookings.component.scss'],
 })
-export class BookingsPage implements OnInit {
-
-  @ViewChild('signupSlider', {static: true}) signupSlider;
+export class BookingsComponent implements OnInit {
+  @Input() selectedCombo: Combo;
+  @ViewChild('signupSlider', {static: true}) signupSlider: IonSlides;
 
   public slideOneForm: FormGroup;
   public slideTwoForm: FormGroup;
+  viewEntered = false;
+
   public useCoupon = false;
   public saveCard = true;
   public numOfTickets = 1;
   disabledButton = this.numOfTickets <= 1;
+
   date: string;
   type: 'string'; // 'string' | 'js-date' | 'moment' | 'time' | 'object'
-
   options: CalendarModalOptions = {
     from: new Date(),
     to: new Date(2020, 8, 5),
@@ -27,15 +33,22 @@ export class BookingsPage implements OnInit {
     monthFormat: 'MM/YYYY',
     cssClass: 'my-class',
   };
+
   public submitAttempt = false;
-  constructor(public formBuilder: FormBuilder) {
+  startDate: Date;
+  constructor(
+    private route: ActivatedRoute,
+    private navCtrl: NavController,
+    private comboService: ComboService,
+    private modalCtrl: ModalController,
+    public formBuilder: FormBuilder,
+  ) {
     this.slideOneForm = formBuilder.group({
-      firstName: [''],
+      name: [''],
       phoneNumber: [''],
       email: [''],
       note: [''],
       coupon: [''],
-      numOfTickets: [''],
     });
 
     this.slideTwoForm = formBuilder.group({
@@ -43,11 +56,15 @@ export class BookingsPage implements OnInit {
       cardNumber: [''],
       expiryDate: [''],
       cvc: [''],
-      saveCard: [''],
     });
   }
 
   ngOnInit() {
+
+  }
+
+  ionViewDidEnter() {
+    this.viewEntered = true;
   }
 
   toogleCoupon() {
@@ -66,8 +83,8 @@ export class BookingsPage implements OnInit {
     this.signupSlider.slidePrev();
   }
 
-  onChange($event) {
-    console.log($event);
+  onSelected($event) {
+    this.startDate = new Date($event.time);
   }
 
   increaseNumTickets() {
@@ -92,5 +109,23 @@ export class BookingsPage implements OnInit {
         console.log(this.slideOneForm.value);
         console.log(this.slideTwoForm.value);
     }
+    this.signupSlider.slideNext();
+  }
+
+  onBookCombo() {
+    this.modalCtrl.dismiss(
+      {
+        bookingData: {
+          name: this.slideOneForm.value.name,
+          phoneNumber: this.slideOneForm.value.phoneNumber,
+          email: this.slideOneForm.value.email,
+          note: this.slideOneForm.value.note,
+          coupon: this.slideOneForm.value.coupon,
+          numOfTickets: this.numOfTickets,
+          startDate: this.startDate,
+        }
+      },
+      'confirm'
+    );
   }
 }

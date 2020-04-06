@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { NavController, ModalController, LoadingController } from '@ionic/angular';
 import { Combo } from '../combo.model';
 import { ComboService } from '../combo.service';
+import { TicketService } from 'src/app/tab3/ticket.service';
+import { BookingsComponent } from 'src/app/tab3/bookings/bookings.component';
 
 @Component({
   selector: 'app-combo-detail',
@@ -15,7 +17,10 @@ export class ComboDetailPage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private navCtrl: NavController,
-    private comboService: ComboService
+    private comboService: ComboService,
+    private loadingCtrl: LoadingController,
+    private modalCtrl: ModalController,
+    private ticketService: TicketService,
   ) { }
 
   ngOnInit() {
@@ -25,6 +30,46 @@ export class ComboDetailPage implements OnInit {
         return;
       }
       this.combo = this.comboService.getCombo(paramMap.get('comboId'));
+    });
+  }
+
+  onBookCombo() {
+    this.modalCtrl
+    .create({
+      component: BookingsComponent,
+      componentProps: { selectedCombo: this.combo }
+    })
+    .then(modalEl => {
+      modalEl.present();
+      return modalEl.onDidDismiss();
+    })
+    .then(resultData => {
+      console.log(resultData.data, resultData.role);
+      if (resultData.role === 'confirm') {
+        this.loadingCtrl
+          .create({
+            message: 'Booking place...'
+          })
+          .then(loadingEl => {
+            loadingEl.present();
+            const data = resultData.data.bookingData;
+            this.ticketService.addTicket(
+              this.combo.id,
+              this.combo.title,
+              this.combo.imgUrl,
+              this.combo.rate,
+              this.combo.startDest,
+              data.name,
+              data.phoneNumber,
+              data.email,
+              data.note,
+              data.coupon,
+              data.startDate,
+              data.numOfTickets
+            );
+            loadingEl.dismiss();
+          });
+        }
     });
   }
 

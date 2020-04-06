@@ -5,8 +5,14 @@ export class Ticket {
     public title: string,
     public imgUrl: string,
     public rate: number,
-    public startDate: Date,
     public startDest: string,
-    public numTickets: number
-  ) { }
+    public name: string,
+    public phoneNumber: string,
+    public email: string,
+    public note: string,
+    public coupon: string,
+    public startDate: Date,
+    public numTickets: number,
+  ) {
+  }
 }
