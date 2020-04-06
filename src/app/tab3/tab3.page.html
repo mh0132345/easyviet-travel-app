@@ -33,7 +33,16 @@
     <div *ngIf="loadedTickets && loadedTickets.length > 0">
       <ion-row *ngFor="let ticket of loadedTickets">
         <ion-col>
-          <ion-card>
+          <ion-card 
+            button="true" 
+            [routerLink]="[
+              '/',
+              'tabs',
+              'tab1',
+              'combo-detail',
+              ticket.comboId
+            ]"
+          >
             <img [src]="ticket.imgUrl">
             <ion-card-header>
               <ion-card-title> {{ ticket.title }}</ion-card-title>

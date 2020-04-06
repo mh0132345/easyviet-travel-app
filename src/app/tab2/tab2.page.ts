@@ -7,7 +7,7 @@ import { FavCombosService } from './fav-combos.service';
   templateUrl: 'tab2.page.html',
   styleUrls: ['tab2.page.scss']
 })
-export class Tab2Page implements OnInit{
+export class Tab2Page implements OnInit {
   loadedFavCombos: Combo[] = [];
   numberOfRows: number;
   dummyArray: number[];

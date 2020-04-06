@@ -1,0 +1,175 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="prev()">
+        <ion-icon slot="start" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+  <ion-slides #signupSlider>
+    <ion-slide>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-label>Bước 1/4 </ion-label>
+            <ion-label>Chọn ngày khởi hành </ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-calendar
+          [(ngModel)]="date"
+          (onChange)="onChange($event)"
+          [options]="options"
+          [type]="type"
+          [format]="'YYYY-MM-DD'">
+        </ion-calendar>
+        <ion-button (click)="next()">
+          Chọn
+        </ion-button>
+      </ion-grid>
+    </ion-slide>
+    <ion-slide>
+      <ion-grid>
+        <p *ngIf="submitAttempt" style="color: #ea6153;">
+          Please fill out all details accurately.
+        </p>
+        <ion-row>
+          <ion-col>
+            <ion-label>Bước 2/4 </ion-label>
+            <ion-label>Thông tin cá nhân </ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-list>
+          <form [formGroup]="slideOneForm">
+            <ion-item>
+              <ion-label position="floating">*Tên khách hàng</ion-label>
+              <ion-input formControlName="firstName" type="text"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">+84</ion-label>
+              <ion-input formControlName="phoneNumber" type="text"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">*Email</ion-label>
+              <ion-input formControlName="email" type="text"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">Ghi chú</ion-label>
+              <ion-input formControlName="note" type="text"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label>Mã giảm giá</ion-label>
+              <ion-toggle slot="end" (ionChange)="toogleCoupon()"></ion-toggle>       
+            </ion-item>
+            <ion-item *ngIf="useCoupon">
+              <ion-label position="floating">Nhập mã giảm giá</ion-label>
+              <ion-input formControlName="coupon" type="text"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>Số vé</ion-label>
+              <div slot="end">
+                <ion-item lines="none">
+                  <ion-button 
+                    color="light" 
+                    (click)="decreaseNumTickets()"
+                    [disabled]="disabledButton"> 
+                    <ion-icon name="remove-circle-outline"></ion-icon>
+                  </ion-button>
+                  <ion-label>
+                    {{ numOfTickets }}
+                  </ion-label>
+                  <ion-button color="light" (click)="increaseNumTickets()">
+                    <ion-icon name="add-circle-outline"></ion-icon>
+                  </ion-button>
+                </ion-item>
+              </div>
+            </ion-item>
+          </form>
+        </ion-list>
+        <ion-footer>
+          <ion-button (click)="next()">
+            Tiếp tục
+          </ion-button>
+        </ion-footer>
+      </ion-grid>
+    </ion-slide>
+
+    <ion-slide>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-label>Bước 3/4 </ion-label>
+            <ion-label>Thông tin thẻ </ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-list>
+          <form [formGroup]="slideTwoForm">
+            <ion-item>
+              <ion-label position="floating">*Tên chủ thẻ</ion-label>
+              <ion-input formControlName="cardName" type="text"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">*Số thẻ</ion-label>
+              <ion-input formControlName="cardNumber" type="text"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">*Ngày hết hạn</ion-label>
+              <ion-input formControlName="expiryDate"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">*CVV/CVC</ion-label>
+              <ion-input formControlName="cvc" type="text"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label slot="start" position="floating">Lưu thông tin thẻ</ion-label>
+              <ion-toggle checked slot="end" (ionChange)="toogleSaveCard()"></ion-toggle>       
+            </ion-item>
+          </form>
+        </ion-list>
+
+        <ion-footer>
+          <ion-button (click)="next()">
+            Tiếp tục
+          </ion-button>
+        </ion-footer>
+      </ion-grid>
+    </ion-slide>
+    <ion-slide>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-label>Bước 4/4</ion-label>
+            <ion-label>Thanh toán</ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-label>Tổng tiền</ion-label>
+        </ion-row>
+        <ion-footer>
+          <ion-button (click)="next()">
+            Thanh toán
+          </ion-button>
+        </ion-footer>
+      </ion-grid>
+    </ion-slide>
+    <ion-slide>
+      <ion-label> Giao dịch thành công! Vé đã được thêm vào tài khoản của bạn</ion-label>
+        <ion-footer>
+          <ion-button>
+            Đã xong
+          </ion-button>
+        </ion-footer>
+    </ion-slide>
+  </ion-slides>
+</ion-content>
