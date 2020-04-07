@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Combo } from '../tab1/combo.model';
+import { ComboService } from '../tab1/combo.service';
 
 @Injectable({
   providedIn: 'root'
@@ -39,9 +40,14 @@ export class FavCombosService {
   ];
   private favId: string[] = ['1', '2', '3'];
 
-  constructor() { }
+  constructor(private comboService: ComboService) { }
 
   get favCombos() {
     return [...this._favCombos];
+  }
+
+  public addFavCombo(favId) {
+    const newFavCombo = this.comboService.getCombo(favId);
+    this._favCombos.push(newFavCombo);
   }
 }

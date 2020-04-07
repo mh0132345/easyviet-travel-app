@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CalendarModalOptions } from 'ion2-calendar';
-import { ActivatedRoute } from '@angular/router';
-import { NavController, ModalController, IonSlides } from '@ionic/angular';
+import { ModalController, IonSlides } from '@ionic/angular';
 import { Combo } from '../../tab1/combo.model';
 import { ComboService } from '../../tab1/combo.service';
 
@@ -37,8 +36,6 @@ export class BookingsComponent implements OnInit {
   public submitAttempt = false;
   startDate: Date;
   constructor(
-    private route: ActivatedRoute,
-    private navCtrl: NavController,
     private comboService: ComboService,
     private modalCtrl: ModalController,
     public formBuilder: FormBuilder,
