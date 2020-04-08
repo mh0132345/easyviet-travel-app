@@ -9,5 +9,10 @@ export class Combo {
     public rate: number,
     public startDest: string,
     public travelDest: string,
+    public wifi: boolean,
+    public breakfast: boolean,
+    public hotelRating: number,
+    public taxi: boolean,
+    public description: string,
   ) { }
 }

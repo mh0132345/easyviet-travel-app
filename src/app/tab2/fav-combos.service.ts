@@ -16,6 +16,12 @@ export class FavCombosService {
       4,
       'Hà Nội',
       'Hạ Long',
+      true,
+      true,
+      4,
+      true,
+      'Vịnh Hạ Long nổi tiếng trong nước và quốc tế'
+
     ),
     new Combo(
       '2',
@@ -26,6 +32,11 @@ export class FavCombosService {
       4,
       'Hà Nội',
       'Hạ Long',
+      true,
+      true,
+      4,
+      true,
+      'Vịnh Hạ Long nổi tiếng trong nước và quốc tế'
     ),
     new Combo(
       '3',
@@ -36,6 +47,11 @@ export class FavCombosService {
       4,
       'Hà Nội',
       'Hạ Long',
+      true,
+      true,
+      4,
+      true,
+      'Vịnh Hạ Long nổi tiếng trong nước và quốc tế'
     )
   ];
   private favId: string[] = ['1', '2', '3'];

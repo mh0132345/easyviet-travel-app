@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar class="ion-color" style.background="'url(' + combo.imgUrl + ')'" >
     <ion-buttons>
-      <ion-back-button icon="arrow-back-outline" slot="start"></ion-back-button>
+      <ion-back-button icon="arrow-back-outline" slot="start" text=""></ion-back-button>
     </ion-buttons>
       <ion-img [src]="combo.imgUrl"></ion-img>
   </ion-toolbar>
@@ -38,9 +38,37 @@
         </ion-label>
       </ion-col>
     </ion-row>
+
+    <ion-row>
+      <ion-col size=6 *ngIf="combo.wifi">
+        <ion-icon name="wifi-outline"></ion-icon>
+        <ion-label> Wifi miễn phí </ion-label>
+      </ion-col>
+      <ion-col size=6>
+        <ion-icon name="bed-outline"></ion-icon>
+        <ion-label> Khách sạn {{ combo.hotelRating }}</ion-label>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size=6 *ngIf="combo.breakfast">
+        <ion-icon name="fast-food-outline"></ion-icon>
+        <ion-label> Bữa sáng buffet </ion-label>
+      </ion-col>
+      <ion-col size=6 *ngIf="combo.taxi">
+        <ion-icon name="bus-outline"></ion-icon>
+        <ion-label> Xe đưa đón </ion-label>
+      </ion-col>
+    </ion-row>
+
     <ion-row>
       <ion-col>
         <ion-label> Giới thiệu </ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-label> {{ combo.description }} </ion-label>
       </ion-col>
     </ion-row>
   </ion-grid>
