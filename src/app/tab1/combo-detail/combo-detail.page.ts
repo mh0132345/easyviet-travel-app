@@ -1,18 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavController, ModalController, LoadingController } from '@ionic/angular';
 import { Combo } from '../combo.model';
 import { ComboService } from '../combo.service';
 import { TicketService } from 'src/app/tab3/ticket.service';
 import { BookingsComponent } from 'src/app/tab3/bookings/bookings.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-combo-detail',
   templateUrl: './combo-detail.page.html',
   styleUrls: ['./combo-detail.page.scss'],
 })
-export class ComboDetailPage implements OnInit {
+export class ComboDetailPage implements OnInit, OnDestroy {
   combo: Combo;
+  private comboSub: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,7 +31,9 @@ export class ComboDetailPage implements OnInit {
         this.navCtrl.navigateBack('/tabs/tab1');
         return;
       }
-      this.combo = this.comboService.getCombo(paramMap.get('comboId'));
+      this.comboSub = this.comboService.getCombo(paramMap.get('comboId')).subscribe(combo => {
+        this.combo = combo;
+      });
     });
   }
 
@@ -73,4 +77,9 @@ export class ComboDetailPage implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    if (this.comboSub) {
+      this.comboSub.unsubscribe();
+    }
+  }
 }

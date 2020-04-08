@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Combo } from './combo.model';
-import { platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
+import { BehaviorSubject } from 'rxjs';
+import { take, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ComboService {
-  private _combos: Combo[] = [
+  private _combos = new BehaviorSubject<Combo[]>([
     new Combo(
       '1',
       'Chương trình combo Hạ Long 2N1D',
@@ -53,15 +54,20 @@ export class ComboService {
       true,
       'Vịnh Hạ Long nổi tiếng trong nước và quốc tế'
     )
-  ];
+  ]);
 
   constructor() { }
 
   get combos() {
-    return [...this._combos];
+    return this._combos.asObservable();
   }
 
   getCombo(id: string) {
-    return {...this._combos.find(c => c.id === id)};
+    return this.combos.pipe(
+      take(1),
+      map(combos => {
+        return {...combos.find(c => c.id === id)};
+      })
+    );
   }
 }

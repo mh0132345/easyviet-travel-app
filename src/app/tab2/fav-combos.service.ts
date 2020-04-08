@@ -1,69 +1,38 @@
 import { Injectable } from '@angular/core';
-import { Combo } from '../tab1/combo.model';
 import { ComboService } from '../tab1/combo.service';
+import { FavCombo } from './favCombo.model';
+import { BehaviorSubject } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FavCombosService {
-  private _favCombos: Combo[] = [
-    new Combo(
+  private _favCombos = new BehaviorSubject<FavCombo[]>([
+    new FavCombo(
       '1',
-      'Chương trình combo Hạ Long 2N1D',
-      'https://tour.dulichvietnam.com.vn/uploads/tour/1554713265_tour-ha-long-3.jpg',
-      4000000,
-      5,
-      4,
-      'Hà Nội',
-      'Hạ Long',
-      true,
-      true,
-      4,
-      true,
-      'Vịnh Hạ Long nổi tiếng trong nước và quốc tế'
-
+      '1'
     ),
-    new Combo(
+    new FavCombo(
       '2',
-      'Chương trình combo Đà Lạt 2N1D',
-      'https://tour.dulichvietnam.com.vn/uploads/tour/1554713265_tour-ha-long-3.jpg',
-      8000000,
-      5,
-      4,
-      'Hà Nội',
-      'Hạ Long',
-      true,
-      true,
-      4,
-      true,
-      'Vịnh Hạ Long nổi tiếng trong nước và quốc tế'
+      '2'
     ),
-    new Combo(
+    new FavCombo(
       '3',
-      'Chương trình combo Vũ Hán 2N1D',
-      'https://tour.dulichvietnam.com.vn/uploads/tour/1554713265_tour-ha-long-3.jpg',
-      15000000,
-      5,
-      4,
-      'Hà Nội',
-      'Hạ Long',
-      true,
-      true,
-      4,
-      true,
-      'Vịnh Hạ Long nổi tiếng trong nước và quốc tế'
-    )
-  ];
-  private favId: string[] = ['1', '2', '3'];
+      '3'
+    ),
+  ]);
 
-  constructor(private comboService: ComboService) { }
+  constructor() { }
 
   get favCombos() {
-    return [...this._favCombos];
+    return this._favCombos.asObservable();
   }
 
-  public addFavCombo(favId) {
-    const newFavCombo = this.comboService.getCombo(favId);
-    this._favCombos.push(newFavCombo);
+  public addFavCombo(favId: string) {
+    const newFavCombo = new FavCombo(Math.random().toString(), favId);
+    this.favCombos.pipe(take(1)).subscribe(favCombos => {
+      this._favCombos.next(favCombos.concat(newFavCombo));
+    });
   }
 }
