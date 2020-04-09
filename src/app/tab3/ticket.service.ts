@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Ticket } from './ticket.model';
 import { BehaviorSubject } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take, tap, delay } from 'rxjs/operators';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,11 +22,12 @@ export class TicketService {
     //   '',
     //   '',
     //   new Date('2020-02-27'),
-    //   2
+    //   2,
+    //   'abc'
     // )
   ]);
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   get tickets() {
     return this._tickets.asObservable();
@@ -58,10 +60,16 @@ export class TicketService {
       note,
       coupon,
       startDate,
-      numTickets
+      numTickets,
+      this.authService.userId
     );
-    this.tickets.pipe(take(1)).subscribe(tickets => {
-      this._tickets.next(tickets.concat(newTicket));
-    });
+    console.log(newTicket);
+    return this.tickets.pipe(
+      take(1),
+      delay(1000),
+      tap(tickets => {
+        this._tickets.next(tickets.concat(newTicket));
+      })
+    );
   }
 }

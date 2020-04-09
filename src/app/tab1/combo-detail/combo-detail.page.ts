@@ -70,8 +70,10 @@ export class ComboDetailPage implements OnInit, OnDestroy {
               data.coupon,
               data.startDate,
               data.numOfTickets
-            );
-            loadingEl.dismiss();
+            )
+            .subscribe(() => {
+              loadingEl.dismiss();
+            });
           });
         }
     });

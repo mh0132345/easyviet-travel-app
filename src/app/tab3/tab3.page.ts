@@ -4,6 +4,7 @@ import { TicketService } from './ticket.service';
 import { Combo } from '../tab1/combo.model';
 import { ComboService } from '../tab1/combo.service';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-tab3',
@@ -17,11 +18,14 @@ export class Tab3Page implements OnInit, OnDestroy {
 
   constructor(
     private ticketService: TicketService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
     this.ticketsSub = this.ticketService.tickets.subscribe(tickets => {
-      this.loadedTickets = tickets;
+      this.loadedTickets = tickets.filter(
+        ticket => ticket.userId === this.authService.userId
+      );
     });
   }
 

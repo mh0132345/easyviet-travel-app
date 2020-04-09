@@ -13,6 +13,7 @@ export class Ticket {
     public coupon: string,
     public startDate: Date,
     public numTickets: number,
+    public userId: string,
   ) {
   }
 }
