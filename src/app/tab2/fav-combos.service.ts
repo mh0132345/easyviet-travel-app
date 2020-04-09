@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ComboService } from '../tab1/combo.service';
 import { FavCombo } from './favCombo.model';
 import { BehaviorSubject } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 
 @Injectable({
@@ -38,10 +38,17 @@ export class FavCombosService {
     return this._favCombos.asObservable();
   }
 
-  public addFavCombo(favId: string) {
-    const newFavCombo = new FavCombo(Math.random().toString(), favId, this.authService.userId);
+  public addFavCombo(comboId: string) {
+    const newFavCombo = new FavCombo(Math.random().toString(), comboId, this.authService.userId);
     this.favCombos.pipe(take(1)).subscribe(favCombos => {
       this._favCombos.next(favCombos.concat(newFavCombo));
     });
+  }
+
+  public removeFavCombo(favId: string) {
+    this.favCombos.pipe(take(1)).subscribe(favCombos => {
+        this._favCombos.next(favCombos.filter(c => c.id !== favId));
+      }
+    );
   }
 }

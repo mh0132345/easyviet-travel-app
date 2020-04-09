@@ -30,36 +30,50 @@
     </div>
     <div *ngIf="loadedFavCombos && loadedFavCombos.length > 0">
       <ion-row *ngFor="let combo of dummyArray; index as i">
-        <ion-col size=4 offset=1>
-          <ion-card 
-            button="true" 
-            [routerLink]="[
-              '/',
-              'tabs',
-              'tab1',
-              'combo-detail',
-              loadedFavCombos[i*2].id
-            ]"
-          >
+        <ion-col size=4>
+          <ion-card>
             <img [src]="loadedFavCombos[i*2].imgUrl">
-            <ion-card-header>
+            <ion-button 
+              fill="clear"
+              color="light"
+              class="fav-button"
+              (click)="onRemoveFavCombo(favComboInfo[i*2].id)"
+            >
+              <ion-icon name="heart" color="danger"></ion-icon>
+            </ion-button>
+            <ion-card-header
+              [routerLink]="[
+                '/',
+                'tabs',
+                'tab1',
+                'combo-detail',
+                loadedFavCombos[i*2].id
+              ]"  
+            >
               <ion-card-title> {{ loadedFavCombos[i*2].title }}</ion-card-title>
             </ion-card-header>
           </ion-card>
         </ion-col>
-        <ion-col size=4 offset=1 *ngIf="loadedFavCombos[i*2+1]">
-          <ion-card 
-            button="true" 
-            [routerLink]="[
-              '/',
-              'tabs',
-              'tab1',
-              'combo-detail',
-              loadedFavCombos[i*2+1].id
-            ]"
-          >
+        <ion-col size=4 offset=2 *ngIf="loadedFavCombos[i*2+1]">
+          <ion-card>
             <img [src]="loadedFavCombos[i*2+1].imgUrl">
-            <ion-card-header>
+            <ion-button 
+              fill="clear"
+              color="light"
+              class="fav-button"
+              (click)="onRemoveFavCombo(favComboInfo[i*2+1].id)"
+            >
+              <ion-icon name="heart" color="danger"></ion-icon>
+            </ion-button>
+            <ion-card-header
+              [routerLink]="[
+                '/',
+                'tabs',
+                'tab1',
+                'combo-detail',
+                loadedFavCombos[i*2+1].id
+              ]"
+            >
               <ion-card-title> {{ loadedFavCombos[i*2+1].title }}</ion-card-title>
             </ion-card-header>
           </ion-card>

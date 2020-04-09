@@ -5,6 +5,7 @@ import { Article } from './article.model';
 import { ArticleService } from './article.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { FavCombosService } from '../tab2/fav-combos.service';
 
 @Component({
   selector: 'app-tab1',
@@ -20,6 +21,7 @@ export class Tab1Page implements OnInit, OnDestroy {
   constructor(
     private comboService: ComboService,
     private articleService: ArticleService,
+    private favCombosService: FavCombosService
   ) {}
 
   ngOnInit() {
@@ -39,5 +41,9 @@ export class Tab1Page implements OnInit, OnDestroy {
     if (this.articlesSub) {
       this.articlesSub.unsubscribe();
     }
+  }
+
+  onAddingFavCombo(comboId: string) {
+    this.favCombosService.addFavCombo(comboId);
   }
 }

@@ -4,6 +4,7 @@ import { FavCombosService } from './fav-combos.service';
 import { ComboService } from '../tab1/combo.service';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
+import { FavCombo } from './favCombo.model';
 
 @Component({
   selector: 'app-tab2',
@@ -11,7 +12,8 @@ import { AuthService } from '../auth/auth.service';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page implements OnInit, OnDestroy {
-  loadedFavCombos: Combo[] = [];
+  favComboInfo: FavCombo[];
+  loadedFavCombos: Combo[];
   numberOfRows: number;
   dummyArray: number[];
 
@@ -25,17 +27,23 @@ export class Tab2Page implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.favCombosSub = this.favComboService.favCombos.subscribe(favCombos => {
+      this.loadedFavCombos = [];
+      this.favComboInfo = [];
       favCombos.forEach((favCombo) => {
         if (favCombo.userId === this.authService.userId) {
+          this.favComboInfo.push(favCombo);
           this.combosSub = this.comboService.getCombo(favCombo.comboId).subscribe(combo => {
             this.loadedFavCombos.push(combo);
           });
         }
       });
+      const numberOfRows =  Math.round(this.loadedFavCombos.length / 2);
+      this.dummyArray = new Array(numberOfRows);
     });
+  }
 
-    const numberOfRows =  Math.round(this.loadedFavCombos.length / 2);
-    this.dummyArray = new Array(numberOfRows);
+  onRemoveFavCombo(favComboId: string) {
+    this.favComboService.removeFavCombo(favComboId);
   }
 
   ngOnDestroy() {
