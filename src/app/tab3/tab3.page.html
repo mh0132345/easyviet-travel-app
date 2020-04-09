@@ -48,7 +48,7 @@
               <ion-card-title> {{ ticket.title }}</ion-card-title>
               <ion-card-subtitle>
                 <ion-icon name="time-outline" color="primary"></ion-icon>
-                {{ ticket.startDate.toLocaleString().split(",")[0]}}
+                {{ ticket.startDate * 1000 | date:'dd/MM/yyyy' }}
               </ion-card-subtitle>
               <ion-card-subtitle>
                 <ion-icon name="airplane-outline" color="primary"></ion-icon>

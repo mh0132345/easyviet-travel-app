@@ -11,9 +11,8 @@ export class Ticket {
     public email: string,
     public note: string,
     public coupon: string,
-    public startDate: Date,
+    public startDate: number,
     public numTickets: number,
-    public userId: string,
   ) {
   }
 }

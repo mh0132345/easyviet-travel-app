@@ -2,9 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Ticket } from './ticket.model';
 import { TicketService } from './ticket.service';
 import { Combo } from '../tab1/combo.model';
-import { ComboService } from '../tab1/combo.service';
 import { Subscription } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab3',
@@ -18,14 +17,19 @@ export class Tab3Page implements OnInit, OnDestroy {
 
   constructor(
     private ticketService: TicketService,
-    private authService: AuthService
+    private loadingCtrl: LoadingController
   ) {}
 
   ngOnInit() {
-    this.ticketsSub = this.ticketService.tickets.subscribe(tickets => {
-      this.loadedTickets = tickets.filter(
-        ticket => ticket.userId === this.authService.userId
-      );
+    this.loadingCtrl.create({
+      message: 'Đang tải vé của bạn...'
+    })
+    .then(loadingEl => {
+      loadingEl.present();
+      this.ticketsSub = this.ticketService.tickets.subscribe(tickets => {
+        this.loadedTickets = tickets;
+        loadingEl.dismiss();
+      });
     });
   }
 

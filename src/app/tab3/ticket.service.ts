@@ -1,36 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Ticket } from './ticket.model';
-import { BehaviorSubject } from 'rxjs';
-import { take, tap, delay } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
+import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TicketService {
-  private _tickets = new BehaviorSubject<Ticket[]>([
-    // new Ticket(
-    //   '1',
-    //   '1',
-    //   'Chương trình combo Hạ Long 2N1D',
-    //   'https://tour.dulichvietnam.com.vn/uploads/tour/1554713265_tour-ha-long-3.jpg',
-    //   5,
-    //   'Hà Nội',
-    //   'Le Minh Hoang',
-    //   '0912345678',
-    //   'test@test.com',
-    //   '',
-    //   '',
-    //   new Date('2020-02-27'),
-    //   2,
-    //   'abc'
-    // )
-  ]);
 
-  constructor(private authService: AuthService) { }
+  ticketListRef: AngularFireList<any>;
+
+  constructor(
+    private authService: AuthService,
+    private db: AngularFireDatabase,
+  ) { }
 
   get tickets() {
-    return this._tickets.asObservable();
+    const uid = this.authService.userId;
+    return this.db.list<Ticket>(`users/${uid}/tickets`).valueChanges();
   }
 
   public addTicket(
@@ -59,17 +47,12 @@ export class TicketService {
       email,
       note,
       coupon,
-      startDate,
-      numTickets,
-      this.authService.userId
+      moment(startDate).unix(),
+      numTickets
     );
-    console.log(newTicket);
-    return this.tickets.pipe(
-      take(1),
-      delay(1000),
-      tap(tickets => {
-        this._tickets.next(tickets.concat(newTicket));
-      })
-    );
+    const uid = this.authService.userId;
+    this.ticketListRef = this.db.list(`users/${uid}/tickets`);
+    this.ticketListRef.push({...newTicket, id: null});
+    return this.ticketListRef.valueChanges();
   }
 }
