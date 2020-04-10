@@ -7,6 +7,14 @@ const routes: Routes = [
   {
     path: '',
     component: AccountPage
+  },
+  {
+    path: 'account-info',
+    loadChildren: () => import('./account-info/account-info.module').then( m => m.AccountInfoPageModule)
+  },
+  {
+    path: 'language',
+    loadChildren: () => import('./language/language.module').then( m => m.LanguagePageModule)
   }
 ];
 
