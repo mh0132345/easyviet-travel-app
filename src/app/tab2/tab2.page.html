@@ -37,7 +37,7 @@
               fill="clear"
               color="light"
               class="fav-button"
-              (click)="onRemoveFavCombo(favComboInfo[i*2].id)"
+              (click)="onRemoveFavCombo(loadedFavCombos[i*2].id)"
             >
               <ion-icon name="heart" color="danger"></ion-icon>
             </ion-button>
@@ -47,7 +47,7 @@
                 'tabs',
                 'tab1',
                 'combo-detail',
-                loadedFavCombos[i*2].id
+                loadedFavCombos[i*2].comboId
               ]"  
             >
               <ion-card-title> {{ loadedFavCombos[i*2].title }}</ion-card-title>
@@ -61,7 +61,7 @@
               fill="clear"
               color="light"
               class="fav-button"
-              (click)="onRemoveFavCombo(favComboInfo[i*2+1].id)"
+              (click)="onRemoveFavCombo(loadedFavCombos[i*2+1].id)"
             >
               <ion-icon name="heart" color="danger"></ion-icon>
             </ion-button>
@@ -71,7 +71,7 @@
                 'tabs',
                 'tab1',
                 'combo-detail',
-                loadedFavCombos[i*2+1].id
+                loadedFavCombos[i*2+1].comboId
               ]"
             >
               <ion-card-title> {{ loadedFavCombos[i*2+1].title }}</ion-card-title>

@@ -1,10 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Combo } from '../tab1/combo.model';
 import { FavCombosService } from './fav-combos.service';
-import { ComboService } from '../tab1/combo.service';
 import { Subscription } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
 import { FavCombo } from './favCombo.model';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab2',
@@ -12,34 +10,30 @@ import { FavCombo } from './favCombo.model';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page implements OnInit, OnDestroy {
-  favComboInfo: FavCombo[];
-  loadedFavCombos: Combo[];
+  loadedFavCombos: FavCombo[];
   numberOfRows: number;
   dummyArray: number[];
 
   private favCombosSub: Subscription;
-  private combosSub: Subscription;
   constructor(
     private favComboService: FavCombosService,
-    private comboService: ComboService,
-    private authService: AuthService
+    private loadingCtrl: LoadingController,
   ) {}
 
   ngOnInit() {
-    this.favCombosSub = this.favComboService.favCombos.subscribe(favCombos => {
-      this.loadedFavCombos = [];
-      this.favComboInfo = [];
-      favCombos.forEach((favCombo) => {
-        if (favCombo.userId === this.authService.userId) {
-          this.favComboInfo.push(favCombo);
-          this.combosSub = this.comboService.getCombo(favCombo.comboId).subscribe(combo => {
-            this.loadedFavCombos.push(combo);
-          });
-        }
+    this.loadingCtrl.create({
+      message: 'Đang tải vé của bạn...'
+    })
+    .then(loadingEl => {
+      loadingEl.present();
+      this.favCombosSub = this.favComboService.favCombos.subscribe(favCombos => {
+        this.loadedFavCombos = favCombos;
+        const numberOfRows =  Math.round(this.loadedFavCombos.length / 2);
+        this.dummyArray = new Array(numberOfRows);
+        loadingEl.dismiss();
       });
-      const numberOfRows =  Math.round(this.loadedFavCombos.length / 2);
-      this.dummyArray = new Array(numberOfRows);
     });
+
   }
 
   onRemoveFavCombo(favComboId: string) {
@@ -49,9 +43,6 @@ export class Tab2Page implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.favCombosSub) {
       this.favCombosSub.unsubscribe();
-    }
-    if (this.combosSub) {
-      this.combosSub.unsubscribe();
     }
   }
 }

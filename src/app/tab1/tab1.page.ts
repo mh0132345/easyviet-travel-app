@@ -43,7 +43,7 @@ export class Tab1Page implements OnInit, OnDestroy {
     }
   }
 
-  onAddingFavCombo(comboId: string) {
-    this.favCombosService.addFavCombo(comboId);
+  onAddingFavCombo(comboId: string, comboTitle: string, comboImgUrl: string) {
+    this.favCombosService.addFavCombo(comboId, comboTitle, comboImgUrl);
   }
 }
