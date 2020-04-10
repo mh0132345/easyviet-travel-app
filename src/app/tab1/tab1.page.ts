@@ -3,9 +3,9 @@ import { Combo } from './combo.model';
 import { ComboService } from './combo.service';
 import { Article } from './article.model';
 import { ArticleService } from './article.service';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { FavCombosService } from '../tab2/fav-combos.service';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab1',
@@ -21,16 +21,23 @@ export class Tab1Page implements OnInit, OnDestroy {
   constructor(
     private comboService: ComboService,
     private articleService: ArticleService,
-    private favCombosService: FavCombosService
+    private favCombosService: FavCombosService,
+    private loadingCtrl: LoadingController,
   ) {}
 
   ngOnInit() {
-    this.combosSub = this.comboService.combos.subscribe(combos => {
-      this.loadedCombos = combos;
-    });
-
-    this.articlesSub = this.articleService.articles.subscribe(articles => {
-      this.loadedArticles = articles;
+    this.loadingCtrl.create({
+      message: 'Vui lòng chờ một chút...'
+    })
+    .then(loadingEl => {
+      loadingEl.present();
+      this.combosSub = this.comboService.combos.subscribe(combos => {
+        this.loadedCombos = combos;
+      });
+      this.articlesSub = this.articleService.articles.subscribe(articles => {
+        this.loadedArticles = articles;
+      });
+      loadingEl.dismiss();
     });
   }
 
