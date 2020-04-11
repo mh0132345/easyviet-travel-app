@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
+import { take, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-auth',
@@ -9,38 +10,32 @@ import { LoadingController } from '@ionic/angular';
   styleUrls: ['./auth.page.scss'],
 })
 export class AuthPage implements OnInit {
-  isLoading = false;
+  private loading;
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private loadingCtrl: LoadingController,
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
+    this.authService.userIsAuthenticated.subscribe(isAuth => {
+      if (isAuth) {
+        this.loading.dismiss();
+      }
+    });
   }
 
-  onLogin() {
-    this.isLoading = true;
+  async login() {
+    await this.showLoading();
     this.authService.login();
-    this.loadingCtrl
-      .create({
-        keyboardClose: true,
-        message: 'Logging in...'
-      })
-      .then(loadingEl => {
-        loadingEl.present();
-        setTimeout(() => {
-          this.isLoading = false;
-          loadingEl.dismiss();
-          this.router.navigateByUrl('/tabs/tab1');
-        }, 1500);
-      });
-
   }
 
-  onLogout() {
-    this.authService.logout();
-    this.router.navigateByUrl('/auth');
+  async showLoading() {
+    this.loading = await this.loadingCtrl.create({
+      message: 'Đang đăng nhập...'
+    });
+    this.loading.present();
   }
 }

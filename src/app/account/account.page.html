@@ -1,11 +1,11 @@
 <ion-header>
   <ion-item>
     <ion-avatar slot="start">
-      <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+      <img [src]="currentUser.photoUrl">
     </ion-avatar>
     <ion-label>
-      <h2><b>Nguyễn Hải Đăng</b></h2>
-      <p>lenonguyen@gmail.com</p>
+      <h2><b> {{currentUser.name}}</b></h2>
+      <p>{{currentUser.email}}</p>
     </ion-label>
   </ion-item>
 </ion-header>
@@ -52,7 +52,11 @@
         Hỗ trợ
       </ion-label>
     </ion-item>
-    <ion-item >
+    <ion-item
+      button
+      (click)="onLogout()"
+      detail="false"
+    >
       <ion-icon color="warning" name="exit-outline" slot="end"></ion-icon>
       <ion-label >
         Đăng xuất

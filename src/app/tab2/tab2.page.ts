@@ -13,6 +13,7 @@ export class Tab2Page implements OnInit, OnDestroy {
   loadedFavCombos: FavCombo[];
   numberOfRows: number;
   dummyArray: number[];
+  isLoading = false;
 
   private favCombosSub: Subscription;
   constructor(
@@ -34,6 +35,13 @@ export class Tab2Page implements OnInit, OnDestroy {
       });
     });
 
+  }
+
+  ionViewWillEnter() {
+    this.isLoading = true;
+    this.favComboService.fetchFavCombos().subscribe(() => {
+      this.isLoading = false;
+    });
   }
 
   onRemoveFavCombo(favComboId: string) {

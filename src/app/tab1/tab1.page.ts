@@ -5,7 +5,7 @@ import { Article } from './article.model';
 import { ArticleService } from './article.service';
 import { Subscription } from 'rxjs';
 import { FavCombosService } from '../tab2/fav-combos.service';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab1',
@@ -23,6 +23,7 @@ export class Tab1Page implements OnInit, OnDestroy {
     private articleService: ArticleService,
     private favCombosService: FavCombosService,
     private loadingCtrl: LoadingController,
+    private toastCtrl: ToastController,
   ) {}
 
   ngOnInit() {
@@ -51,6 +52,15 @@ export class Tab1Page implements OnInit, OnDestroy {
   }
 
   onAddingFavCombo(comboId: string, comboTitle: string, comboImgUrl: string) {
-    this.favCombosService.addFavCombo(comboId, comboTitle, comboImgUrl);
+    this.favCombosService.addFavCombo(comboId, comboTitle, comboImgUrl).subscribe();
+    this.toastCtrl
+      .create({
+        color: 'dark',
+        duration: 2000,
+        message: 'Đã thêm vào yêu thích',
+      })
+      .then(toast => {
+        toast.present();
+      });
   }
 }

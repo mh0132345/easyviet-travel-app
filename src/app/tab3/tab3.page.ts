@@ -13,6 +13,7 @@ import { LoadingController } from '@ionic/angular';
 export class Tab3Page implements OnInit, OnDestroy {
   loadedTickets: Ticket[] = [];
   loadedCombo: Combo[] = [];
+  isLoading = false;
   private ticketsSub: Subscription;
 
   constructor(
@@ -30,6 +31,13 @@ export class Tab3Page implements OnInit, OnDestroy {
         this.loadedTickets = tickets;
         loadingEl.dismiss();
       });
+    });
+  }
+
+  ionViewWillEnter() {
+    this.isLoading = true;
+    this.ticketService.fetchTickets().subscribe(() => {
+      this.isLoading = false;
     });
   }
 

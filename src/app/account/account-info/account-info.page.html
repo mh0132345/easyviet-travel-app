@@ -9,11 +9,11 @@
   <ion-list>
     <ion-item>
       <ion-avatar slot="start">
-        <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+        <img [src]="currentUser.photoUrl">
       </ion-avatar>
       <ion-label>
-        <h2><b>Nguyễn Hải Đăng</b></h2>
-        <p>lenonguyen@gmail.com</p>
+        <h2><b> {{currentUser.name}}</b></h2>
+        <p>{{currentUser.email}}</p>
       </ion-label>
     </ion-item>
 
@@ -23,7 +23,7 @@
         <ion-text>Tên khách hàng</ion-text>
       </ion-label>
       <ion-label text-wrap>
-        Nguyễn Hải Đăng
+        {{currentUser.name}}
       </ion-label>
     </ion-item>
 
@@ -42,7 +42,7 @@
         <ion-text>Email</ion-text>
       </ion-label>
       <ion-label text-wrap>
-        lenonguyen@gmail.com
+        {{currentUser.email}}
       </ion-label>
     </ion-item>
   </ion-list>
