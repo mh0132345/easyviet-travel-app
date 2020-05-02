@@ -16,6 +16,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { environment } from '../environments/environment';
 import { Facebook } from '@ionic-native/facebook/ngx';
 import * as firebase from 'firebase/app';
+import { PayPal } from '@ionic-native/paypal/ngx';
 
 firebase.initializeApp(environment.firebaseConfig);
 
@@ -33,6 +34,7 @@ firebase.initializeApp(environment.firebaseConfig);
   ],
   providers: [
     Facebook,
+    PayPal,
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

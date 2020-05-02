@@ -1,9 +1,11 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CalendarModalOptions } from 'ion2-calendar';
-import { ModalController, IonSlides } from '@ionic/angular';
+import { ModalController, IonSlides, ToastController } from '@ionic/angular';
 import { Combo } from '../../tab1/combo.model';
 import { ComboService } from '../../tab1/combo.service';
+import { PayPal, PayPalPayment, PayPalConfiguration } from '@ionic-native/paypal/ngx';
+import { error } from 'protractor';
 
 @Component({
   selector: 'app-bookings',
@@ -35,10 +37,17 @@ export class BookingsComponent implements OnInit {
 
   public submitAttempt = false;
   startDate: Date;
+
+  paymentAmount = '4000';
+  currency = 'USD';
+  currencyIcon = '$';
+
   constructor(
     private comboService: ComboService,
     private modalCtrl: ModalController,
     public formBuilder: FormBuilder,
+    private payPal: PayPal,
+    private toastCtrl: ToastController,
   ) {
     this.slideOneForm = formBuilder.group({
       name: [''],
@@ -124,5 +133,62 @@ export class BookingsComponent implements OnInit {
       },
       'confirm'
     );
+  }
+
+  payWithPaypal() {
+    const sandBoxClientId = 'AU2oJ_5sjp1cSi5NmPRCN5JhizNgrxw6vTXQxa0fGFH73WVgsfjDs_eBC_HAmJ7lDS6wT5E1nzgvMIbF';
+    this.payPal.init({
+      PayPalEnvironmentProduction: 'YOUR_PRODUCTION_CLIENT_ID',
+      PayPalEnvironmentSandbox: sandBoxClientId
+    }).then(() => {
+      // Environments: PayPalEnvironmentNoNetwork, PayPalEnvironmentSandbox, PayPalEnvironmentProduction
+      this.payPal.prepareToRender('PayPalEnvironmentSandbox', new PayPalConfiguration({
+        // Only needed if you get an "Internal Service Error" after PayPal login!
+        // payPalShippingAddressOption: 2 // PayPalShippingAddressOptionPayPal
+      })).then(() => {
+        const payment = new PayPalPayment(this.paymentAmount, this.currency, 'Description', 'sale');
+        console.log(payment);
+        this.payPal.renderSinglePaymentUI(payment).then((res) => {
+          console.log(res);
+          this.next();
+          // Successfully paid
+
+          // Example sandbox response
+          //
+          // {
+          //   "client": {
+          //     "environment": "sandbox",
+          //     "product_name": "PayPal iOS SDK",
+          //     "paypal_sdk_version": "2.16.0",
+          //     "platform": "iOS"
+          //   },
+          //   "response_type": "payment",
+          //   "response": {
+          //     "id": "PAY-1AB23456CD789012EF34GHIJ",
+          //     "state": "approved",
+          //     "create_time": "2016-10-03T13:33:33Z",
+          //     "intent": "sale"
+          //   }
+          // }
+        }, () => {
+          // Error or render dialog closed without being successful
+          this.presentFailPayment();
+        });
+      }, () => {
+        // Error in configuration
+        console.log('Error in configuration');
+      });
+    }, () => {
+      // Error in initialization, maybe PayPal isn't supported or something else
+      console.log('Error in initialization');
+    });
+  }
+
+  async presentFailPayment() {
+    const toast = await this.toastCtrl.create({
+      message: 'Payment failed',
+      duration: 2000
+    });
+    toast.present();
   }
 }

@@ -28,12 +28,10 @@ export class TicketService {
         if (!uid) {
           throw new Error('User not found!');
         }
-        console.log(uid);
         this.ticketListRef = this.db.list<Ticket>(`users/${uid}/tickets`);
         return this.ticketListRef.snapshotChanges();
       }),
       map(res => {
-        console.log(res);
         const ticketList = [];
         res.forEach(item => {
           const combo = item.payload.toJSON();
@@ -43,7 +41,6 @@ export class TicketService {
         return ticketList;
       }),
       tap(ticketList => {
-        console.log(ticketList);
         this._ticket.next(ticketList);
       })
     );

@@ -30,11 +30,9 @@ export class FavCombosService {
         if (!uid) {
           throw new Error('User not found!');
         }
-        console.log(uid);
         return this.db.list<FavCombo>(`users/${uid}/favcombos`).snapshotChanges();
       }),
       map(res => {
-        console.log(res);
         const favComboList = [];
         res.forEach(item => {
           const combo = item.payload.toJSON();
@@ -44,7 +42,6 @@ export class FavCombosService {
         return favComboList;
       }),
       tap(favComboList => {
-        console.log(favComboList);
         this._favCombos.next(favComboList);
       })
     );
