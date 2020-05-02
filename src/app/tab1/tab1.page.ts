@@ -18,6 +18,11 @@ export class Tab1Page implements OnInit, OnDestroy {
   private combosSub: Subscription;
   private articlesSub: Subscription;
 
+  slideOpts = {
+    slidesPerView: 1.5,
+    spaceBetween: 10
+  };
+
   constructor(
     private comboService: ComboService,
     private articleService: ArticleService,

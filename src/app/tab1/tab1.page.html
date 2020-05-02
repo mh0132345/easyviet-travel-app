@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-header padding [translucent]="true">
   <ion-searchbar></ion-searchbar>
 </ion-header>
 
@@ -10,12 +10,12 @@
     </ion-row>
     <ion-row>
       <ion-col color="primary" offset="1">
-        <ion-label color="primary">Combo voucher</ion-label>
+        <ion-label color="primary" class="title">Combo voucher</ion-label>
       </ion-col>
     </ion-row>
     <ion-row >
       <ion-col>
-        <ion-slides spaceBetween="-40" >
+        <ion-slides [options]="slideOpts">
           <ion-slide *ngFor="let combo of loadedCombos">
             <ion-card>
               <img [src]="combo.imgUrl">
@@ -36,7 +36,7 @@
                   combo.id
                 ]"
               >
-                <ion-card-title> {{ combo.title }}</ion-card-title>
+                <ion-card-title class="combo-title"> {{ combo.title }}</ion-card-title>
               </ion-card-header>
             </ion-card>
           </ion-slide>
@@ -45,13 +45,13 @@
     </ion-row>
     <ion-row>
       <ion-col color="primary" offset="1">
-        <ion-label color="primary">Tin du lịch</ion-label>
+        <ion-label color="primary" class="title">Tin du lịch</ion-label>
       </ion-col>
     </ion-row>
 
     <ion-row>
       <ion-col>
-        <ion-slides spaceBetween="-40">
+        <ion-slides [options]="slideOpts">
           <ion-slide *ngFor="let article of loadedArticles">
             <ion-card 
               [routerLink]="[
@@ -63,7 +63,7 @@
               ]">
               <img [src]="article.imgUrl">
               <ion-card-header text-wrap>
-                <ion-card-title class="ion-text-wrap"> {{ article.title }}</ion-card-title>
+                <ion-card-title class="article-title"> {{ article.title }}</ion-card-title>
               </ion-card-header>
             </ion-card>
           </ion-slide>
