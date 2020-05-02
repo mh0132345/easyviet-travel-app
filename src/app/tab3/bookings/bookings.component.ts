@@ -1,11 +1,9 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { CalendarModalOptions } from 'ion2-calendar';
 import { ModalController, IonSlides, ToastController } from '@ionic/angular';
 import { Combo } from '../../tab1/combo.model';
 import { ComboService } from '../../tab1/combo.service';
 import { PayPal, PayPalPayment, PayPalConfiguration } from '@ionic-native/paypal/ngx';
-import { error } from 'protractor';
 
 @Component({
   selector: 'app-bookings',
@@ -14,26 +12,15 @@ import { error } from 'protractor';
 })
 export class BookingsComponent implements OnInit {
   @Input() selectedCombo: Combo;
-  @ViewChild('signupSlider', {static: true}) signupSlider: IonSlides;
+  @ViewChild('bookingSlider', {static: true}) bookingSlider: IonSlides;
 
   public slideOneForm: FormGroup;
-  public slideTwoForm: FormGroup;
   viewEntered = false;
 
   public useCoupon = false;
   public saveCard = true;
   public numOfTickets = 1;
   disabledButton = this.numOfTickets <= 1;
-
-  date: string;
-  type: 'string'; // 'string' | 'js-date' | 'moment' | 'time' | 'object'
-  options: CalendarModalOptions = {
-    from: new Date(),
-    to: new Date(2020, 8, 5),
-    disableWeeks: [0, 1, 2, 3, 5, 6],
-    monthFormat: 'MM/YYYY',
-    cssClass: 'my-class',
-  };
 
   public submitAttempt = false;
   startDate: Date;
@@ -56,13 +43,6 @@ export class BookingsComponent implements OnInit {
       note: [''],
       coupon: [''],
     });
-
-    this.slideTwoForm = formBuilder.group({
-      cardName: [''],
-      cardNumber: [''],
-      expiryDate: [''],
-      cvc: [''],
-    });
   }
 
   ngOnInit() {
@@ -82,15 +62,17 @@ export class BookingsComponent implements OnInit {
   }
 
   next() {
-    this.signupSlider.slideNext();
+    this.bookingSlider.slideNext();
   }
 
   prev() {
-    this.signupSlider.slidePrev();
-  }
-
-  onSelected($event) {
-    this.startDate = new Date($event.time);
+    this.bookingSlider.getActiveIndex().then(index => {
+      if (index !== 0) {
+        this.bookingSlider.slidePrev();
+      } else {
+        this.modalCtrl.dismiss();
+      }
+    });
   }
 
   increaseNumTickets() {
@@ -107,15 +89,12 @@ export class BookingsComponent implements OnInit {
     this.submitAttempt = true;
 
     if (!this.slideOneForm.valid) {
-        this.signupSlider.slideTo(0);
-    } else if (!this.slideTwoForm.valid) {
-        this.signupSlider.slideTo(1);
+        this.bookingSlider.slideTo(0);
     } else {
         console.log('Success!');
         console.log(this.slideOneForm.value);
-        console.log(this.slideTwoForm.value);
     }
-    this.signupSlider.slideNext();
+    this.bookingSlider.slideNext();
   }
 
   onBookCombo() {
@@ -128,7 +107,6 @@ export class BookingsComponent implements OnInit {
           note: this.slideOneForm.value.note,
           coupon: this.slideOneForm.value.coupon,
           numOfTickets: this.numOfTickets,
-          startDate: this.startDate,
         }
       },
       'confirm'
@@ -150,7 +128,7 @@ export class BookingsComponent implements OnInit {
         console.log(payment);
         this.payPal.renderSinglePaymentUI(payment).then((res) => {
           console.log(res);
-          this.next();
+          this.onBookCombo();
           // Successfully paid
 
           // Example sandbox response
