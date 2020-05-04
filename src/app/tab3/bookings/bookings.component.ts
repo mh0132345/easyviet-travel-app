@@ -25,7 +25,7 @@ export class BookingsComponent implements OnInit {
   public submitAttempt = false;
   startDate: Date;
 
-  paymentAmount = '4000';
+  currencyConvertRate = 0.000043;
   currency = 'USD';
   currencyIcon = '$';
 
@@ -115,6 +115,7 @@ export class BookingsComponent implements OnInit {
 
   payWithPaypal() {
     const sandBoxClientId = 'AU2oJ_5sjp1cSi5NmPRCN5JhizNgrxw6vTXQxa0fGFH73WVgsfjDs_eBC_HAmJ7lDS6wT5E1nzgvMIbF';
+    const totalPrice = this.selectedCombo.price * this.numOfTickets * this.currencyConvertRate;
     this.payPal.init({
       PayPalEnvironmentProduction: 'YOUR_PRODUCTION_CLIENT_ID',
       PayPalEnvironmentSandbox: sandBoxClientId
@@ -124,11 +125,13 @@ export class BookingsComponent implements OnInit {
         // Only needed if you get an "Internal Service Error" after PayPal login!
         // payPalShippingAddressOption: 2 // PayPalShippingAddressOptionPayPal
       })).then(() => {
-        const payment = new PayPalPayment(this.paymentAmount, this.currency, 'Description', 'sale');
+        const payment = new PayPalPayment(totalPrice.toString(), this.currency, 'Description', 'sale');
         console.log(payment);
         this.payPal.renderSinglePaymentUI(payment).then((res) => {
           console.log(res);
-          this.onBookCombo();
+          if (res.state === 'approved') {
+            this.onBookCombo();
+          }
           // Successfully paid
 
           // Example sandbox response
