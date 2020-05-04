@@ -28,6 +28,7 @@ export class ArticleDetailPage implements OnInit, OnDestroy {
       }
       this.articleSub = this.articleService.getArticle(paramMap.get('articleId')).subscribe(article => {
         this.article = article;
+        console.log(this.article);
       });
     });
   }

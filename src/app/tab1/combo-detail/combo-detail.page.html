@@ -7,24 +7,23 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding>
   <ion-grid>
     <ion-row>
       <ion-col>
-        <ion-label> {{ combo.title }}</ion-label>
+        <ion-label color="dark"> {{ combo.title }}</ion-label>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
         <ion-label>
           <ion-icon name="time-outline"></ion-icon>
-
         </ion-label>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-label>
+        <ion-label color="dark">
           <ion-icon name="pin-outline"></ion-icon>
           {{ combo.travelDest }}
         </ion-label>
@@ -32,7 +31,7 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-label>
+        <ion-label color="dark">
           <ion-icon name="airplane-outline"></ion-icon>
           Khởi hành từ {{ combo.startDest }}
         </ion-label>
@@ -63,12 +62,21 @@
 
     <ion-row>
       <ion-col>
-        <ion-label> Giới thiệu </ion-label>
+        <ion-label color="dark"> Giới thiệu </ion-label>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-label> {{ combo.description }} </ion-label>
+        <ion-text color="dark"> 
+          <h3 class="combo-description">
+            {{ combo.description }} 
+          </h3>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-label color="dark"> Bao gồm và điều khoản </ion-label>
       </ion-col>
     </ion-row>
   </ion-grid>
