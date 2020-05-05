@@ -14,5 +14,22 @@ export class Combo {
     public hotelRating: number,
     public taxi: boolean,
     public description: string,
+    public availableWeek: AvailableWeek,
+  ) { }
+}
+
+export interface Coupon {
+  [key: string]: number;
+}
+
+export class AvailableWeek {
+  constructor(
+    public mon: boolean,
+    public tue: boolean,
+    public wed: boolean,
+    public thu: boolean,
+    public fri: boolean,
+    public sat: boolean,
+    public sun: boolean,
   ) { }
 }

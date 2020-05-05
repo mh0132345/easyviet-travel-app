@@ -125,7 +125,7 @@ export class BookingsComponent implements OnInit {
         // Only needed if you get an "Internal Service Error" after PayPal login!
         // payPalShippingAddressOption: 2 // PayPalShippingAddressOptionPayPal
       })).then(() => {
-        const payment = new PayPalPayment(totalPrice.toString(), this.currency, 'Description', 'sale');
+        const payment = new PayPalPayment(totalPrice.toFixed(2), this.currency, 'Description', 'sale');
         console.log(payment);
         this.payPal.renderSinglePaymentUI(payment).then((res) => {
           console.log(res);

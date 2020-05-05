@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavController, ModalController, LoadingController } from '@ionic/angular';
-import { Combo } from '../combo.model';
+import { Combo, AvailableWeek } from '../combo.model';
 import { ComboService } from '../combo.service';
 import { TicketService } from 'src/app/tab3/ticket.service';
 import { BookingsComponent } from 'src/app/tab3/bookings/bookings.component';
@@ -16,6 +16,7 @@ import { CalendarModal, CalendarModalOptions, DayConfig, CalendarResult } from '
 export class ComboDetailPage implements OnInit, OnDestroy {
   combo: Combo;
   private comboSub: Subscription;
+  public availableDay = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -34,18 +35,51 @@ export class ComboDetailPage implements OnInit, OnDestroy {
       }
       this.comboSub = this.comboService.getCombo(paramMap.get('comboId')).subscribe(combo => {
         this.combo = combo;
+        const daysOfWeekEngViet = {
+          mon: 'Thứ hai',
+          tue: 'Thứ ba',
+          wed: 'Thứ tư',
+          thu: 'Thứ năm',
+          fri: 'Thứ sáu',
+          sat: 'Thứ bảy',
+          sun: 'Chủ nhật',
+        };
+        for (const day in this.combo.availableWeek) {
+          if (this.combo.availableWeek.hasOwnProperty(day)) {
+            if (this.combo.availableWeek[day]) {
+              this.availableDay += daysOfWeekEngViet[day] + ' ';
+            }
+          }
+        }
+        this.availableDay += 'hàng tuần';
       });
     });
   }
 
   async onBookCombo() {
+    const disableWeeks = [];
+    const daysOfWeek = {
+      sun: 0,
+      mon: 1,
+      tue: 2,
+      wed: 3,
+      thu: 4,
+      fri: 5,
+      sat: 6,
+    };
+    for (const day in this.combo.availableWeek) {
+      if (this.combo.availableWeek.hasOwnProperty(day)) {
+        if (!this.combo.availableWeek[day]) {
+          disableWeeks.push(daysOfWeek[day]);
+        }
+      }
+    }
     const options: CalendarModalOptions = {
       title: 'Chọn ngày khởi hành',
       from: new Date(),
       to: new Date(2020, 30, 7),
-      disableWeeks: [0, 1, 2, 3, 5, 6],
+      disableWeeks,
       monthFormat: 'MM/YYYY',
-      cssClass: 'my-class',
       doneLabel: 'Tiếp tục',
       closeLabel: 'Quay lại'
     };

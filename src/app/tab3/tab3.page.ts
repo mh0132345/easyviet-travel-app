@@ -12,7 +12,6 @@ import { LoadingController } from '@ionic/angular';
 })
 export class Tab3Page implements OnInit, OnDestroy {
   loadedTickets: Ticket[] = [];
-  loadedCombo: Combo[] = [];
   isLoading = false;
   private ticketsSub: Subscription;
 
