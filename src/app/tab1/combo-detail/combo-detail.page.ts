@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavController, ModalController, LoadingController } from '@ionic/angular';
-import { Combo, AvailableWeek } from '../combo.model';
+import { Combo } from '../combo.model';
 import { ComboService } from '../combo.service';
 import { TicketService } from 'src/app/tab3/ticket.service';
 import { BookingsComponent } from 'src/app/tab3/bookings/bookings.component';

@@ -15,6 +15,7 @@ export class Combo {
     public taxi: boolean,
     public description: string,
     public availableWeek: AvailableWeek,
+    public coupon: Coupon,
   ) { }
 }
 

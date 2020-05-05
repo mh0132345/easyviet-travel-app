@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Combo, AvailableWeek } from './combo.model';
+import { Combo, AvailableWeek, Coupon } from './combo.model';
 import { BehaviorSubject } from 'rxjs';
 import { take, map } from 'rxjs/operators';
 import { AngularFireDatabase, AngularFireList} from '@angular/fire/database';
@@ -41,6 +41,7 @@ export class ComboService {
   }
 
   public addTestCombos() {
+    const coupon: Coupon = { test: 500000};
     const combos = [
       new Combo(
         '1',
@@ -57,6 +58,7 @@ export class ComboService {
         true,
         'Vịnh Hạ Long nổi tiếng trong nước và quốc tế',
         new AvailableWeek(false, false, false, false, true, false, false),
+        coupon,
       ),
       new Combo(
         '2',
@@ -72,7 +74,8 @@ export class ComboService {
         4,
         true,
         'Vịnh Hạ Long nổi tiếng trong nước và quốc tế',
-        new AvailableWeek(false, false, false, true, false, false, false)
+        new AvailableWeek(false, false, false, true, false, false, false),
+        coupon,
       ),
       new Combo(
         '3',
@@ -88,7 +91,8 @@ export class ComboService {
         4,
         true,
         'Vịnh Hạ Long nổi tiếng trong nước và quốc tế',
-        new AvailableWeek(false, false, false, false, true, false, false)
+        new AvailableWeek(false, false, false, false, true, false, false),
+        coupon,
       )
     ];
     combos.forEach(combo => {

@@ -73,7 +73,7 @@
           </form>
         </ion-list>
         <ion-footer>
-          <ion-button (click)="next()">
+          <ion-button (click)="onSavingCustomerInfo()">
             Tiếp tục
           </ion-button>
         </ion-footer>
@@ -116,7 +116,7 @@
         </ion-row>
         <ion-row>
           <ion-label>Tổng tiền</ion-label>
-          <ion-label> {{ selectedCombo.price * numOfTickets }}đ</ion-label>
+          <ion-label> {{ totalPrice }}đ</ion-label>
         </ion-row>
         <ion-footer>
           <ion-button (click)="onBookCombo()">

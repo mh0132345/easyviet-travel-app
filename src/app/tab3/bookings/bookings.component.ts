@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ModalController, IonSlides, ToastController } from '@ionic/angular';
 import { Combo } from '../../tab1/combo.model';
-import { ComboService } from '../../tab1/combo.service';
 import { PayPal, PayPalPayment, PayPalConfiguration } from '@ionic-native/paypal/ngx';
 
 @Component({
@@ -25,12 +24,13 @@ export class BookingsComponent implements OnInit {
   public submitAttempt = false;
   startDate: Date;
 
+  totalPrice = 0;
+  discount = 0;
   currencyConvertRate = 0.000043;
   currency = 'USD';
   currencyIcon = '$';
 
   constructor(
-    private comboService: ComboService,
     private modalCtrl: ModalController,
     public formBuilder: FormBuilder,
     private payPal: PayPal,
@@ -113,9 +113,17 @@ export class BookingsComponent implements OnInit {
     );
   }
 
+  onSavingCustomerInfo() {
+    if (this.selectedCombo.coupon[this.slideOneForm.value.coupon]) {
+      this.discount = this.selectedCombo.coupon[this.slideOneForm.value.coupon];
+    }
+    this.totalPrice = this.selectedCombo.price * this.numOfTickets - this.discount;
+    this.next();
+  }
+
   payWithPaypal() {
     const sandBoxClientId = 'AU2oJ_5sjp1cSi5NmPRCN5JhizNgrxw6vTXQxa0fGFH73WVgsfjDs_eBC_HAmJ7lDS6wT5E1nzgvMIbF';
-    const totalPrice = this.selectedCombo.price * this.numOfTickets * this.currencyConvertRate;
+    const totalPrice = this.totalPrice * this.currencyConvertRate;
     this.payPal.init({
       PayPalEnvironmentProduction: 'YOUR_PRODUCTION_CLIENT_ID',
       PayPalEnvironmentSandbox: sandBoxClientId
