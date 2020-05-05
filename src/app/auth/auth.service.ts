@@ -15,14 +15,13 @@ export class AuthService {
 
   constructor(
     private platform: Platform,
-    private zone: NgZone,
     private fb: Facebook,
   ) { }
 
   get userIsAuthenticated() {
     return this._user.asObservable().pipe(map(user => {
       if (user) {
-        return !!user.token;
+        return !!user.id;
       } else {
         return false;
       }
@@ -47,17 +46,17 @@ export class AuthService {
     }));
   }
 
-  login() {
+  async login() {
     // return this.browserFacebookAuth();
     if (this.platform.is('cordova')) {
-      this.nativeFacebookAuth();
+      await this.nativeFacebookAuth();
     } else {
-      this.browserFacebookAuth();
+      await this.browserFacebookAuth();
     }
   }
 
   async nativeFacebookAuth() {
-    this.fb.login(['email']).then((response: FacebookLoginResponse) => {
+    return this.fb.login(['email']).then((response: FacebookLoginResponse) => {
       console.log('Logged into Fb!', response);
       if (response.authResponse) {
           // Build Firebase credential with the Facebook auth token.
@@ -73,7 +72,6 @@ export class AuthService {
               this._user.next(new User(
                 result.user.uid,
                 result.user.email,
-                (result.credential as firebase.auth.OAuthCredential).accessToken,
                 result.user.displayName,
                 result.user.photoURL
               ));
@@ -94,12 +92,10 @@ export class AuthService {
   async browserFacebookAuth() {
     const provider = new firebase.auth.FacebookAuthProvider();
 
-    firebase.auth().signInWithPopup(provider).then(result => {
-      console.log(result);
+    return firebase.auth().signInWithPopup(provider).then(result => {
       this._user.next(new User(
         result.user.uid,
         result.user.email,
-        (result.credential as firebase.auth.OAuthCredential).accessToken,
         result.user.displayName,
         result.user.photoURL
       ));
@@ -124,5 +120,14 @@ export class AuthService {
         console.log(err);
       }
     }
+  }
+
+  setCurrentUser(uid: string, email: string, displayName: string, photoURL: string) {
+    this._user.next(new User(
+      uid,
+      email,
+      displayName,
+      photoURL
+    ));
   }
 }
