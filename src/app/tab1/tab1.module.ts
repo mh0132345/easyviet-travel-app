@@ -7,6 +7,7 @@ import { Tab1Page } from './tab1.page';
 import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
 import { Tab1PageRoutingModule } from './tab1-routing.module';
 import { ArticleDetailPageModule } from './article-detail/article-detail.module';
+import { SearchPageComponent } from './search-page/search-page.component';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { ArticleDetailPageModule } from './article-detail/article-detail.module'
     ArticleDetailPageModule,
     RouterModule.forChild([{ path: '', component: Tab1Page }])
   ],
-  declarations: [Tab1Page]
+  declarations: [Tab1Page, SearchPageComponent],
+  entryComponents: [SearchPageComponent]
 })
 export class Tab1PageModule {}

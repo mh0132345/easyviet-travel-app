@@ -1,37 +1,29 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Combo } from './combo.model';
-import { ComboService } from './combo.service';
-import { Article } from './article.model';
-import { ArticleService } from './article.service';
-import { Subscription } from 'rxjs';
-import { FavCombosService } from '../tab2/fav-combos.service';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { ComboService } from '../combo.service';
+import { FavCombosService } from 'src/app/tab2/fav-combos.service';
 import { LoadingController, ToastController, ModalController } from '@ionic/angular';
-import { SearchPageComponent } from './search-page/search-page.component';
+import { Combo } from '../combo.model';
+import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-tab1',
-  templateUrl: 'tab1.page.html',
-  styleUrls: ['tab1.page.scss']
+  selector: 'app-search-page',
+  templateUrl: './search-page.component.html',
+  styleUrls: ['./search-page.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default
 })
-export class Tab1Page implements OnInit, OnDestroy {
+export class SearchPageComponent implements OnInit, OnDestroy {
+  searchInput: string;
   loadedCombos: Combo[] = [];
-  loadedArticles: Article[] = [];
+  allCombos: Combo[] = [];
   private combosSub: Subscription;
-  private articlesSub: Subscription;
-
-  slideOpts = {
-    slidesPerView: 1.5,
-    spaceBetween: 10
-  };
 
   constructor(
     private comboService: ComboService,
-    private articleService: ArticleService,
     private favCombosService: FavCombosService,
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
     private modalCtrl: ModalController,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loadingCtrl.create({
@@ -40,21 +32,28 @@ export class Tab1Page implements OnInit, OnDestroy {
     .then(loadingEl => {
       loadingEl.present();
       this.combosSub = this.comboService.combos.subscribe(combos => {
-        this.loadedCombos = combos;
+        this.allCombos = combos;
       });
-      this.articlesSub = this.articleService.articles.subscribe(articles => {
-        this.loadedArticles = articles;
-      });
+      this.loadedCombos = this.allCombos;
       loadingEl.dismiss();
     });
+  }
+
+  search() {
+    console.log(this.searchInput);
+    if (this.searchInput === '') {
+      this.loadedCombos = this.allCombos;
+    } else {
+      this.comboService.findCombo(this.searchInput).subscribe(combos => {
+        console.log(combos);
+        this.loadedCombos = combos;
+      });
+    }
   }
 
   ngOnDestroy() {
     if (this.combosSub) {
       this.combosSub.unsubscribe();
-    }
-    if (this.articlesSub) {
-      this.articlesSub.unsubscribe();
     }
   }
 
@@ -71,11 +70,7 @@ export class Tab1Page implements OnInit, OnDestroy {
       });
   }
 
-  submitSearch() {
-    this.modalCtrl.create({
-      component: SearchPageComponent,
-    }).then(modalEl => {
-      modalEl.present();
-    });
+  closeModal() {
+    this.modalCtrl.dismiss();
   }
 }

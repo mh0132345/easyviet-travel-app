@@ -1,5 +1,9 @@
 <ion-header padding [translucent]="true">
-  <ion-searchbar></ion-searchbar>
+  <ion-searchbar 
+    debounce=1000
+    placeholder="Bạn muốn đi đâu"
+    (ionFocus)=submitSearch()>
+  </ion-searchbar>
 </ion-header>
 
 <ion-content padding>

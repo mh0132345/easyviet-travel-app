@@ -1,0 +1,53 @@
+<ion-header padding [translucent]="true">
+  <ion-grid>
+    <ion-row>
+      <ion-col size=1>
+        <ion-button fill=clear color=dark (click)="closeModal()"> 
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-searchbar
+          [(ngModel)]="searchInput"
+          debounce=1000
+          searchIcon=null
+          placeholder="Bạn muốn đi đâu"
+          (ionChange)=search()
+        >
+        </ion-searchbar>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-sliding *ngFor="let combo of loadedCombos">
+      <ion-item>
+        <ion-card>
+          <img [src]="combo.imgUrl">
+          <ion-button 
+            fill="clear"
+            color="light"
+            class="fav-button"
+            (click)="onAddingFavCombo(combo.id, combo.title, combo.imgUrl)"
+          >
+            <ion-icon name="heart-outline"></ion-icon>
+          </ion-button >
+          <ion-card-header 
+            [routerLink]="[
+              '/',
+              'tabs',
+              'tab1',
+              'combo-detail',
+              combo.id
+            ]"
+          >
+            <ion-card-title class="combo-title"> {{ combo.title }}</ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ion-item>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>

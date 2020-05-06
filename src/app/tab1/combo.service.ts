@@ -35,6 +35,17 @@ export class ComboService {
     );
   }
 
+  findCombo(travelDest: string) {
+    return this.combos.pipe(
+      take(1),
+      map(combos => {
+        return combos.filter(
+          c => this.changeAlias(c.travelDest).toLowerCase().includes(this.changeAlias(travelDest).toLowerCase())
+        );
+      })
+    );
+  }
+
   public addCombo(newCombo: Combo) {
     this.comboListRef = this.db.list(`combos`);
     this.comboListRef.push({...newCombo, id: null});
@@ -98,5 +109,22 @@ export class ComboService {
     combos.forEach(combo => {
       this.addCombo(combo);
     });
+  }
+
+  private changeAlias(input: string) {
+    // Convert special Vietnamese character to English character
+    let str = input;
+    str = str.toLowerCase();
+    str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, 'a');
+    str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, 'e');
+    str = str.replace(/ì|í|ị|ỉ|ĩ/g, 'i');
+    str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, 'o');
+    str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, 'u');
+    str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, 'y');
+    str = str.replace(/đ/g, 'd');
+    str = str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, ' ');
+    str = str.replace(/ + /g, ' ');
+    str = str.trim();
+    return str;
   }
 }
