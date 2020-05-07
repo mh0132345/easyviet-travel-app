@@ -22,14 +22,14 @@
         <ion-text color="primary">*</ion-text>
         <ion-text>Tên khách hàng</ion-text>
       </ion-label>
-      <ion-input value={{currentUser.name}} type="text" [(ngModel)]="currentUser.name"></ion-input>
+      <ion-input value={{currentUser.name}} [(ngModel)]="currentUser.name" type="text" (ionBlur)="updateName()"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label>
         <ion-text>+84</ion-text>
       </ion-label>
-      <ion-input value={{currentUser.phoneNumber}} type="tel" inputmode="numeric" [(ngModel)]="currentUser.phoneNumber"></ion-input>
+      <ion-input value={{currentUser.phoneNumber}} type="tel" inputmode="numeric" [(ngModel)]="currentUser.phoneNumber" (ionBlur)="updatePhoneNumber()"></ion-input>
     </ion-item>
 
     <ion-item>

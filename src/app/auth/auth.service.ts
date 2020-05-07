@@ -6,16 +6,19 @@ import { Platform } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { User } from './user.model';
 import { map } from 'rxjs/operators';
+import { AngularFireDatabase, AngularFireObject } from '@angular/fire/database';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   public _user = new BehaviorSubject<User>(null);
+  phoneNumberRef: AngularFireObject<any>;
 
   constructor(
     private platform: Platform,
     private fb: Facebook,
+    private db: AngularFireDatabase,
   ) { }
 
   get userIsAuthenticated() {
@@ -68,13 +71,12 @@ export class AuthService {
             .auth()
             .signInWithCredential(credential)
             .then((result) => {
-              console.log('Firebase success: ' + result);
-              this._user.next(new User(
+              this.setCurrentUser(
                 result.user.uid,
                 result.user.email,
                 result.user.displayName,
-                result.user.photoURL
-              ));
+                result.user.photoURL,
+              );
             })
             .catch(error => {
               console.log(error);
@@ -93,12 +95,14 @@ export class AuthService {
     const provider = new firebase.auth.FacebookAuthProvider();
 
     return firebase.auth().signInWithPopup(provider).then(result => {
-      this._user.next(new User(
+      console.log(result);
+      console.log(this.getUserPhoneNumber(result.user.uid));
+      this.setCurrentUser(
         result.user.uid,
         result.user.email,
         result.user.displayName,
-        result.user.photoURL
-      ));
+        result.user.photoURL,
+      );
     }).catch(err => {
       alert(err.message);
     });
@@ -127,7 +131,23 @@ export class AuthService {
       uid,
       email,
       displayName,
-      photoURL
+      photoURL,
     ));
+  }
+
+  public setUserPhoneNumber(uid: string, phoneNumber: string) {
+    this.phoneNumberRef = this.db.object(`users/${uid}/profile`);
+    this.phoneNumberRef.set({phoneNumber});
+  }
+
+  public updateDisplayName(displayName: string) {
+    firebase.auth().currentUser.updateProfile({
+      displayName,
+    });
+  }
+
+  public getUserPhoneNumber(uid: string) {
+    this.phoneNumberRef = this.db.object(`users/${uid}/profile/phoneNumber`);
+    return this.phoneNumberRef.valueChanges();
   }
 }
