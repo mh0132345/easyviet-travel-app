@@ -95,8 +95,6 @@ export class AuthService {
     const provider = new firebase.auth.FacebookAuthProvider();
 
     return firebase.auth().signInWithPopup(provider).then(result => {
-      console.log(result);
-      console.log(this.getUserPhoneNumber(result.user.uid));
       this.setCurrentUser(
         result.user.uid,
         result.user.email,

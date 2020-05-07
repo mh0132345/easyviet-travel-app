@@ -35,6 +35,7 @@
           >
             <ion-icon name="heart-outline"></ion-icon>
           </ion-button >
+          
           <ion-card-header 
             [routerLink]="[
               '/',
@@ -44,6 +45,19 @@
               combo.id
             ]"
           >
+            <ion-card-subtitle>
+              <ionic5-star-rating #rating
+                activeIcon = "star"
+                defaultIcon = "star-outline"
+                activeColor = "#ffce73" 
+                defaultColor = "#cdd1d5"
+                readonly="false"
+                rating="{{combo.rate}}"
+                fontSize="13px"
+              >
+              </ionic5-star-rating>
+              {{ combo.rate }} / 5
+            </ion-card-subtitle>
             <ion-card-title class="combo-title"> {{ combo.title }}</ion-card-title>
           </ion-card-header>
         </ion-card>

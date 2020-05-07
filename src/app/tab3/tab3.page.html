@@ -45,6 +45,19 @@
           >
             <img [src]="ticket.imgUrl">
             <ion-card-header>
+              <ion-card-subtitle>
+                <ionic5-star-rating #rating
+                  activeIcon = "star"
+                  defaultIcon = "star-outline"
+                  activeColor = "#ffce73" 
+                  defaultColor = "#cdd1d5"
+                  readonly="false"
+                  rating="{{ticket.rate}}"
+                  fontSize="13px"
+                >
+                </ionic5-star-rating>
+                {{ ticket.rate }} / 5
+              </ion-card-subtitle>
               <ion-card-title> {{ ticket.title }}</ion-card-title>
               <ion-card-subtitle>
                 <ion-icon name="time-outline" color="primary"></ion-icon>

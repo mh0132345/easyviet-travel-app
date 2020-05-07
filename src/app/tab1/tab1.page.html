@@ -41,6 +41,19 @@
                 ]"
               >
                 <ion-card-title class="combo-title"> {{ combo.title }}</ion-card-title>
+                <ion-card-subtitle>
+                  <ionic5-star-rating #rating
+                    activeIcon = "star"
+                    defaultIcon = "star-outline"
+                    activeColor = "#ffce73" 
+                    defaultColor = "#cdd1d5"
+                    readonly="false"
+                    rating="{{combo.rate}}"
+                    fontSize="13px"
+                  >
+                  </ionic5-star-rating>
+                  {{ combo.rate }} / 5
+                </ion-card-subtitle>
               </ion-card-header>
             </ion-card>
           </ion-slide>

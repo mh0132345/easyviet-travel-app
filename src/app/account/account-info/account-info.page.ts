@@ -20,7 +20,6 @@ export class AccountInfoPage implements OnInit {
         this.currentUser.phoneNumber = phoneNumber;
       });
     });
-
   }
 
   updateName() {

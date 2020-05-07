@@ -8,6 +8,7 @@ import { ExploreContainerComponentModule } from '../explore-container/explore-co
 import { Tab1PageRoutingModule } from './tab1-routing.module';
 import { ArticleDetailPageModule } from './article-detail/article-detail.module';
 import { SearchPageComponent } from './search-page/search-page.component';
+import { StarRatingModule } from 'ionic5-star-rating';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { SearchPageComponent } from './search-page/search-page.component';
     ExploreContainerComponentModule,
     Tab1PageRoutingModule,
     ArticleDetailPageModule,
+    StarRatingModule,
     RouterModule.forChild([{ path: '', component: Tab1Page }])
   ],
   declarations: [Tab1Page, SearchPageComponent],

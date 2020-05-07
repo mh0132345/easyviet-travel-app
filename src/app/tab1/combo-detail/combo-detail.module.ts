@@ -9,6 +9,7 @@ import { ComboDetailPageRoutingModule } from './combo-detail-routing.module';
 import { ComboDetailPage } from './combo-detail.page';
 import { BookingsComponent } from 'src/app/tab3/bookings/bookings.component';
 import { CalendarModule } from 'ion2-calendar';
+import { StarRatingModule } from 'ionic5-star-rating';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { CalendarModule } from 'ion2-calendar';
     FormsModule,
     IonicModule,
     ReactiveFormsModule,
+    StarRatingModule,
     ComboDetailPageRoutingModule,
     CalendarModule,
   ],

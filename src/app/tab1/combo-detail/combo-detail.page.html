@@ -10,6 +10,23 @@
 <ion-content padding>
   <ion-grid>
     <ion-row>
+      <ion-col size="3">
+        <ionic5-star-rating #rating
+          activeIcon = "star"
+          defaultIcon = "star-outline"
+          activeColor = "#ffce73" 
+          defaultColor = "#cdd1d5"
+          readonly="false"
+          rating="{{combo.rate}}"
+          fontSize="13px"
+        >
+        </ionic5-star-rating>
+      </ion-col>
+      <ion-col>
+        {{ combo.rate }} / 5
+      </ion-col>
+    </ion-row>
+    <ion-row>
       <ion-col>
         <ion-label color="dark"> {{ combo.title }}</ion-label>
       </ion-col>
