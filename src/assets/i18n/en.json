@@ -7,5 +7,9 @@
     "ARTICLES": "Travel articles",
     "WAIT": "Please wait...",
     "ADDFAV": "Added to favourite!",
-    "SEARCH": "Let's travel to..."
+    "SEARCH": "Let's travel to...",
+    "FAV": "Favourite",
+    "NOFAV": "You don't have any favourite combo yet",
+    "DISCOVER": "DISCOVER",
+    "RMFAV": "Deleted!"
 }

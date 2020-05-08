@@ -7,5 +7,9 @@
     "ARTICLES": "Tin du lịch",
     "WAIT": "Vui lòng chờ một chút...",
     "ADDFAV": "Đã thêm vào yêu thích!",
-    "SEARCH": "Bạn muốn đi đâu"
+    "SEARCH": "Bạn muốn đi đâu",
+    "FAV": "Yêu thích",
+    "NOFAV": "Bạn chưa có yêu thích gì",
+    "DISCOVER": "KHÁM PHÁ",
+    "RMFAV": "Đã xóa!"
 }
