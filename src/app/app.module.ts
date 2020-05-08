@@ -17,6 +17,9 @@ import { environment } from '../environments/environment';
 import { Facebook } from '@ionic-native/facebook/ngx';
 import * as firebase from 'firebase/app';
 import { PayPal } from '@ionic-native/paypal/ngx';
+import { TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 firebase.initializeApp(environment.firebaseConfig);
 
@@ -30,7 +33,15 @@ firebase.initializeApp(environment.firebaseConfig);
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (HttpLoaderFactory),
+        deps: [HttpClient]
+      }
+    }),
+    HttpClientModule
   ],
   providers: [
     Facebook,
@@ -42,3 +53,7 @@ firebase.initializeApp(environment.firebaseConfig);
   bootstrap: [AppComponent]
 })
 export class AppModule {}
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
