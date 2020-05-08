@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-
+import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-tabs',
@@ -16,12 +15,16 @@ export class TabsPage {
   constructor(private translateService: TranslateService) {}
 
   ionViewDidEnter() {
-    this.translateService.setDefaultLang('en');
-    this.translateService.use('vi');
     this._initialiseTranslation();
   }
 
   _initialiseTranslation(): void {
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.home = this.translateService.instant('HOME');
+      this.home = this.translateService.instant('FAVOURITE');
+      this.home = this.translateService.instant('TICKETS');
+      this.home = this.translateService.instant('ACCOUNT');
+    });
     this.translateService.get('HOME').subscribe((res: string) => {
       this.home = res;
     });
