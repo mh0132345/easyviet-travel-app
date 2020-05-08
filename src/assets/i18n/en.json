@@ -9,7 +9,12 @@
     "ADDFAV": "Added to favourite!",
     "SEARCH": "Let's travel to...",
     "FAV": "Favourite",
-    "NOFAV": "You don't have any favourite combo yet",
+    "NOFAV": "You don't have any favourite combos yet",
     "DISCOVER": "DISCOVER",
-    "RMFAV": "Deleted!"
+    "RMFAV": "Deleted!",
+    "YOURTICKETS": "Your tickets",
+    "NOTICKET": "You don't have any tickets yet",
+    "FROM": "Departure from",
+    "TICKETUNIT": "Tickets",
+    "APPLIED": "Your ticket is applied"
 }

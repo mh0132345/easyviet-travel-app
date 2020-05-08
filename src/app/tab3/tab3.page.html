@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title size="medium" class="ion-text-center">
-      Vé của bạn
+      {{ yourTicket }}
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -11,7 +11,7 @@
     <div *ngIf="!loadedTickets || loadedTickets.length <= 0">
       <ion-row>
         <ion-col size="6" offset="3">
-          <ion-label>Bạn hiện không có vé nào</ion-label>
+          <ion-label>{{ noTicketNotice }}</ion-label>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -25,7 +25,7 @@
               'tab1'
             ]"
           >
-           KHÁM PHÁ 
+           {{ discover }}
           </ion-button>
         </ion-col>
       </ion-row>
@@ -65,17 +65,17 @@
               </ion-card-subtitle>
               <ion-card-subtitle>
                 <ion-icon name="airplane-outline" color="primary"></ion-icon>
-                Khởi hành từ {{ ticket.startDest }}
+                {{ from }} {{ ticket.startDest }}
               </ion-card-subtitle>
               <ion-card-subtitle>
                 <ion-icon name="pricetags-outline" color="primary"></ion-icon>
-                {{ ticket.numTickets }} vé
+                {{ ticket.numTickets }} {{ ticketUnit }}
               </ion-card-subtitle>
               <ion-button 
                 expand="full" 
                 shape="round" 
                 class="ion-text-center"> 
-                Vé của bạn đã được kích hoạt
+                {{ appliedMessage }}
               </ion-button>
             </ion-card-header>
           </ion-card>

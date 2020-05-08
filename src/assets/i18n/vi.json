@@ -11,5 +11,10 @@
     "FAV": "Yêu thích",
     "NOFAV": "Bạn chưa có yêu thích gì",
     "DISCOVER": "KHÁM PHÁ",
-    "RMFAV": "Đã xóa!"
+    "RMFAV": "Đã xóa!",
+    "YOURTICKETS": "Vé của bạn",
+    "NOTICKET": "Bạn hiện không có vé nào",
+    "FROM": "Khởi hành từ",
+    "TICKETUNIT": "vé",
+    "APPLIED": "Vé của bạn đã được kích hoạt"
 }
