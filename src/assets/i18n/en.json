@@ -3,5 +3,9 @@
     "FAVOURITE": "Favourite",
     "TICKETS": "Tickets",
     "ACCOUNT": "Account",
-    "LANGUAGE": "Language"
+    "LANGUAGE": "Language",
+    "ARTICLES": "Travel articles",
+    "WAIT": "Please wait...",
+    "ADDFAV": "Added to favourite!",
+    "SEARCH": "Let's travel to..."
 }

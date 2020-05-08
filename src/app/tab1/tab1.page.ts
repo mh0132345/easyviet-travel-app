@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { FavCombosService } from '../tab2/fav-combos.service';
 import { LoadingController, ToastController, ModalController } from '@ionic/angular';
 import { SearchPageComponent } from './search-page/search-page.component';
+import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-tab1',
@@ -18,6 +19,10 @@ export class Tab1Page implements OnInit, OnDestroy {
   loadedArticles: Article[] = [];
   private combosSub: Subscription;
   private articlesSub: Subscription;
+  articlePart: string;
+  waitMessage: string;
+  addFavMessage: string;
+  searchMessage: string;
 
   slideOpts = {
     slidesPerView: 1.5,
@@ -31,11 +36,12 @@ export class Tab1Page implements OnInit, OnDestroy {
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
     private modalCtrl: ModalController,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit() {
     this.loadingCtrl.create({
-      message: 'Vui lòng chờ một chút...'
+      message: this.waitMessage
     })
     .then(loadingEl => {
       loadingEl.present();
@@ -64,7 +70,7 @@ export class Tab1Page implements OnInit, OnDestroy {
       .create({
         color: 'dark',
         duration: 2000,
-        message: 'Đã thêm vào yêu thích',
+        message: this.addFavMessage,
       })
       .then(toast => {
         toast.present();
@@ -76,6 +82,31 @@ export class Tab1Page implements OnInit, OnDestroy {
       component: SearchPageComponent,
     }).then(modalEl => {
       modalEl.present();
+    });
+  }
+
+  ionViewDidEnter() {
+    this._initialiseTranslation();
+  }
+
+  _initialiseTranslation(): void {
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.articlePart = this.translateService.instant('ARTICLES');
+      this.waitMessage = this.translateService.instant('WAIT');
+      this.addFavMessage = this.translateService.instant('ADDFAV');
+      this.searchMessage = this.translateService.instant('SEARCH');
+    });
+    this.translateService.get('ARTICLES').subscribe((res: string) => {
+      this.articlePart = res;
+    });
+    this.translateService.get('WAIT').subscribe((res: string) => {
+      this.waitMessage = res;
+    });
+    this.translateService.get('ADDFAV').subscribe((res: string) => {
+      this.addFavMessage = res;
+    });
+    this.translateService.get('SEARCH').subscribe((res: string) => {
+      this.searchMessage = res;
     });
   }
 }

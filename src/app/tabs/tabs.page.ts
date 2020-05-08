@@ -21,9 +21,9 @@ export class TabsPage {
   _initialiseTranslation(): void {
     this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
       this.home = this.translateService.instant('HOME');
-      this.home = this.translateService.instant('FAVOURITE');
-      this.home = this.translateService.instant('TICKETS');
-      this.home = this.translateService.instant('ACCOUNT');
+      this.favourite = this.translateService.instant('FAVOURITE');
+      this.tickets = this.translateService.instant('TICKETS');
+      this.account = this.translateService.instant('ACCOUNT');
     });
     this.translateService.get('HOME').subscribe((res: string) => {
       this.home = res;

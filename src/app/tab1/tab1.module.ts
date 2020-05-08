@@ -9,6 +9,13 @@ import { Tab1PageRoutingModule } from './tab1-routing.module';
 import { ArticleDetailPageModule } from './article-detail/article-detail.module';
 import { SearchPageComponent } from './search-page/search-page.component';
 import { StarRatingModule } from 'ionic5-star-rating';
+import { TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
   imports: [
@@ -19,7 +26,14 @@ import { StarRatingModule } from 'ionic5-star-rating';
     Tab1PageRoutingModule,
     ArticleDetailPageModule,
     StarRatingModule,
-    RouterModule.forChild([{ path: '', component: Tab1Page }])
+    RouterModule.forChild([{ path: '', component: Tab1Page }]),
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
   ],
   declarations: [Tab1Page, SearchPageComponent],
   entryComponents: [SearchPageComponent]

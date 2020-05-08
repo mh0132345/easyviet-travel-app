@@ -1,7 +1,7 @@
 <ion-header padding [translucent]="true">
   <ion-searchbar 
     debounce=1000
-    placeholder="Bạn muốn đi đâu"
+    placeholder="{{ searchMessage }}"
     (ionFocus)=submitSearch()>
   </ion-searchbar>
 </ion-header>
@@ -62,7 +62,7 @@
     </ion-row>
     <ion-row>
       <ion-col color="primary" offset="1">
-        <ion-label color="primary" class="title">Tin du lịch</ion-label>
+        <ion-label color="primary" class="title">{{ articlePart }}</ion-label>
       </ion-col>
     </ion-row>
 
