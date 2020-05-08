@@ -51,7 +51,7 @@
       <ion-col>
         <ion-label color="dark">
           <ion-icon name="airplane-outline"></ion-icon>
-          Khởi hành từ {{ combo.startDest }}
+          {{ from }} {{ combo.startDest }}
         </ion-label>
       </ion-col>
     </ion-row>
@@ -59,28 +59,28 @@
     <ion-row>
       <ion-col size=6 *ngIf="combo.wifi">
         <ion-icon name="wifi-outline"></ion-icon>
-        <ion-label> Wifi miễn phí </ion-label>
+        <ion-label> {{ freeWifiTitle }} </ion-label>
       </ion-col>
       <ion-col size=6 *ngIf="combo.hotelRating && combo.hotelRating > 0">
         <ion-icon name="bed-outline"></ion-icon>
-        <ion-label> Khách sạn {{ combo.hotelRating }} sao</ion-label>
+        <ion-label> {{ hotelTitle }} {{ combo.hotelRating }} {{ starTitle }}</ion-label>
       </ion-col>
     </ion-row>
 
     <ion-row>
       <ion-col size=6 *ngIf="combo.breakfast">
         <ion-icon name="fast-food-outline"></ion-icon>
-        <ion-label> Bữa sáng buffet </ion-label>
+        <ion-label> {{ breakfastTitle }} </ion-label>
       </ion-col>
       <ion-col size=6 *ngIf="combo.taxi">
         <ion-icon name="bus-outline"></ion-icon>
-        <ion-label> Xe đưa đón </ion-label>
+        <ion-label> {{ taxiTitle }} </ion-label>
       </ion-col>
     </ion-row>
 
     <ion-row>
       <ion-col>
-        <ion-label color="dark"> Giới thiệu </ion-label>
+        <ion-label color="dark"> {{ introTitle }} </ion-label>
       </ion-col>
     </ion-row>
     <ion-row>
@@ -94,7 +94,7 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-label color="dark"> Bao gồm và điều khoản </ion-label>
+        <ion-label color="dark"> {{ offerTitle }} </ion-label>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -109,7 +109,7 @@
         </ion-col>
         <ion-col size="6">
           <ion-button color="primary" expand="block" (click)="onBookCombo()"> 
-            Đặt 
+            {{ bookButtonTitle }} 
           </ion-button>
         </ion-col>
       </ion-row>

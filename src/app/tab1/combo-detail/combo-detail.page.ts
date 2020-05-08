@@ -7,6 +7,7 @@ import { TicketService } from 'src/app/tab3/ticket.service';
 import { BookingsComponent } from 'src/app/tab3/bookings/bookings.component';
 import { Subscription } from 'rxjs';
 import { CalendarModal, CalendarModalOptions, DayConfig, CalendarResult } from 'ion2-calendar';
+import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-combo-detail',
@@ -16,7 +17,28 @@ import { CalendarModal, CalendarModalOptions, DayConfig, CalendarResult } from '
 export class ComboDetailPage implements OnInit, OnDestroy {
   combo: Combo;
   private comboSub: Subscription;
-  public availableDay = '';
+  public availableDay: string;
+  freeWifiTitle: string;
+  hotelTitle: string;
+  breakfastTitle: string;
+  taxiTitle: string;
+  introTitle: string;
+  offerTitle: string;
+  bookButtonTitle: string;
+  starTitle: string;
+  waitMessage: string;
+  mon: string;
+  tue: string;
+  wed: string;
+  thu: string;
+  fri: string;
+  sat: string;
+  sun: string;
+  everyWeek: string;
+  departDateTitle: string;
+  continueButtonTitle: string;
+  cancelButtonTitle: string;
+  from: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -25,7 +47,33 @@ export class ComboDetailPage implements OnInit, OnDestroy {
     private loadingCtrl: LoadingController,
     private modalCtrl: ModalController,
     private ticketService: TicketService,
-  ) { }
+    private translateService: TranslateService,
+  ) {
+    this.translateService.get('MON').subscribe((res: string) => {
+      this.mon = res;
+    });
+    this.translateService.get('TUE').subscribe((res: string) => {
+      this.tue = res;
+    });
+    this.translateService.get('WED').subscribe((res: string) => {
+      this.wed = res;
+    });
+    this.translateService.get('THU').subscribe((res: string) => {
+      this.thu = res;
+    });
+    this.translateService.get('FRI').subscribe((res: string) => {
+      this.fri = res;
+    });
+    this.translateService.get('SAT').subscribe((res: string) => {
+      this.sat = res;
+    });
+    this.translateService.get('SUN').subscribe((res: string) => {
+      this.sun = res;
+    });
+    this.translateService.get('EVERYWEEK').subscribe((res: string) => {
+      this.everyWeek = res;
+    });
+  }
 
   ngOnInit() {
     this.route.paramMap.subscribe(paramMap => {
@@ -35,23 +83,24 @@ export class ComboDetailPage implements OnInit, OnDestroy {
       }
       this.comboSub = this.comboService.getCombo(paramMap.get('comboId')).subscribe(combo => {
         this.combo = combo;
-        const daysOfWeekEngViet = {
-          mon: 'Thứ hai',
-          tue: 'Thứ ba',
-          wed: 'Thứ tư',
-          thu: 'Thứ năm',
-          fri: 'Thứ sáu',
-          sat: 'Thứ bảy',
-          sun: 'Chủ nhật',
+        const daysOfWeek = {
+          mon: this.mon,
+          tue: this.tue,
+          wed: this.wed,
+          thu: this.thu,
+          fri: this.fri,
+          sat: this.sat,
+          sun: this.sun,
         };
+        this.availableDay = '';
         for (const day in this.combo.availableWeek) {
           if (this.combo.availableWeek.hasOwnProperty(day)) {
             if (this.combo.availableWeek[day]) {
-              this.availableDay += daysOfWeekEngViet[day] + ' ';
+              this.availableDay += daysOfWeek[day] + ' ';
             }
           }
         }
-        this.availableDay += 'hàng tuần';
+        this.availableDay += this.everyWeek;
       });
     });
   }
@@ -75,13 +124,13 @@ export class ComboDetailPage implements OnInit, OnDestroy {
       }
     }
     const options: CalendarModalOptions = {
-      title: 'Chọn ngày khởi hành',
+      title: this.departDateTitle,
       from: new Date(),
       to: new Date(2020, 30, 7),
       disableWeeks,
       monthFormat: 'MM/YYYY',
-      doneLabel: 'Tiếp tục',
-      closeLabel: 'Quay lại'
+      doneLabel: this.continueButtonTitle,
+      closeLabel: this.cancelButtonTitle
     };
 
     const myCalendar = await this.modalCtrl.create({
@@ -107,7 +156,7 @@ export class ComboDetailPage implements OnInit, OnDestroy {
         if (resultData.role === 'confirm') {
           this.loadingCtrl
             .create({
-              message: 'Booking place...'
+              message: this.waitMessage
             })
             .then(loadingEl => {
               loadingEl.present();
@@ -139,5 +188,77 @@ export class ComboDetailPage implements OnInit, OnDestroy {
     if (this.comboSub) {
       this.comboSub.unsubscribe();
     }
+  }
+
+  ionViewWillEnter() {
+    this._initialiseTranslation();
+  }
+
+  ionViewDidEnter() {
+
+  }
+
+  _initialiseTranslation(): void {
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.freeWifiTitle = this.translateService.instant('FREEWIFI');
+      this.hotelTitle = this.translateService.instant('HOTEL');
+      this.breakfastTitle = this.translateService.instant('BREAKFAST');
+      this.introTitle = this.translateService.instant('INTRODUCTION');
+      this.offerTitle = this.translateService.instant('OFFER');
+      this.bookButtonTitle = this.translateService.instant('BOOK');
+      this.starTitle = this.translateService.instant('STAR');
+      this.mon = this.translateService.instant('MON');
+      this.tue = this.translateService.instant('TUE');
+      this.wed = this.translateService.instant('WED');
+      this.thu = this.translateService.instant('THU');
+      this.fri = this.translateService.instant('FRI');
+      this.sat = this.translateService.instant('SAT');
+      this.sun = this.translateService.instant('SUN');
+      this.everyWeek = this.translateService.instant('EVERYWEEK');
+      this.departDateTitle = this.translateService.instant('DEPARTDATE');
+      this.continueButtonTitle = this.translateService.instant('CONTINUE');
+      this.cancelButtonTitle = this.translateService.instant('CANCEL');
+      this.from = this.translateService.instant('FROM');
+      this.taxiTitle = this.translateService.instant('TAXI');
+    });
+    this.translateService.get('FREEWIFI').subscribe((res: string) => {
+      this.freeWifiTitle = res;
+    });
+    this.translateService.get('HOTEL').subscribe((res: string) => {
+      this.hotelTitle = res;
+    });
+    this.translateService.get('BREAKFAST').subscribe((res: string) => {
+      this.breakfastTitle = res;
+    });
+    this.translateService.get('INTRODUCTION').subscribe((res: string) => {
+      this.introTitle = res;
+    });
+    this.translateService.get('OFFER').subscribe((res: string) => {
+      this.offerTitle = res;
+    });
+    this.translateService.get('BOOK').subscribe((res: string) => {
+      this.bookButtonTitle = res;
+    });
+    this.translateService.get('STAR').subscribe((res: string) => {
+      this.starTitle = res;
+    });
+    this.translateService.get('WAIT').subscribe((res: string) => {
+      this.waitMessage = res;
+    });
+    this.translateService.get('DEPARTDATE').subscribe((res: string) => {
+      this.departDateTitle = res;
+    });
+    this.translateService.get('CONTINUE').subscribe((res: string) => {
+      this.continueButtonTitle = res;
+    });
+    this.translateService.get('CANCEL').subscribe((res: string) => {
+      this.cancelButtonTitle = res;
+    });
+    this.translateService.get('FROM').subscribe((res: string) => {
+      this.from = res;
+    });
+    this.translateService.get('TAXI').subscribe((res: string) => {
+      this.taxiTitle = res;
+    });
   }
 }
