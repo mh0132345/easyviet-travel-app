@@ -16,5 +16,10 @@
     "NOTICKET": "Bạn hiện không có vé nào",
     "FROM": "Khởi hành từ",
     "TICKETUNIT": "vé",
-    "APPLIED": "Vé của bạn đã được kích hoạt"
+    "APPLIED": "Vé của bạn đã được kích hoạt",
+    "INFO": "Thông tin cá nhân",
+    "HELP": "Hỗ trợ",
+    "LOGOUT": "Đăng xuất",
+    "VERSION": "Phiên bản",
+    "CUSTOMERNAME": "Tên khách hàng"
 }

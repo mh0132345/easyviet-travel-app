@@ -15,6 +15,11 @@
     "YOURTICKETS": "Your tickets",
     "NOTICKET": "You don't have any tickets yet",
     "FROM": "Departure from",
-    "TICKETUNIT": "Tickets",
-    "APPLIED": "Your ticket is applied"
+    "TICKETUNIT": "Ticket(s)",
+    "APPLIED": "Your ticket is applied",
+    "INFO": "Personal information",
+    "HELP": "Support",
+    "LOGOUT": "Log out",
+    "VERSION": "Version",
+    "CUSTOMERNAME": "Customer name"
 }
