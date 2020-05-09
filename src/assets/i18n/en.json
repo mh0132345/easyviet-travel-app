@@ -51,5 +51,8 @@
     "SUCCESS": "Success! Ticket is added to your account",
     "COMPLETE": "Complete",
     "FAIL": "Payment failed!",
-    "INPUTCOUPON": "Input your coupon"
+    "INPUTCOUPON": "Input your coupon",
+    "ERROR": "Error",
+    "ERRORMESSAGE": "Sorry, something went wrong. Try again!",
+    "LOGIN": "LOG IN WITH"
 }

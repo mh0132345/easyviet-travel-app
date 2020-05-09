@@ -2,11 +2,12 @@ import { Injectable, NgZone } from '@angular/core';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 import '@firebase/auth';
 import firebase from '@firebase/app';
-import { Platform } from '@ionic/angular';
+import { Platform, AlertController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { User } from './user.model';
 import { map } from 'rxjs/operators';
 import { AngularFireDatabase, AngularFireObject } from '@angular/fire/database';
+import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +15,23 @@ import { AngularFireDatabase, AngularFireObject } from '@angular/fire/database';
 export class AuthService {
   public _user = new BehaviorSubject<User>(null);
   phoneNumberRef: AngularFireObject<any>;
+  errorTitle: string;
+  errorMessage: string;
 
   constructor(
     private platform: Platform,
     private fb: Facebook,
     private db: AngularFireDatabase,
-  ) { }
+    private alertController: AlertController,
+    private translateService: TranslateService,
+  ) {
+    this.translateService.get('ERROR').subscribe((res: string) => {
+      this.errorTitle = res;
+    });
+    this.translateService.get('ERRORMESSAGE').subscribe((res: string) => {
+      this.errorMessage = res;
+    });
+  }
 
   get userIsAuthenticated() {
     return this._user.asObservable().pipe(map(user => {
@@ -79,15 +91,15 @@ export class AuthService {
               );
             })
             .catch(error => {
-              console.log(error);
+              this.presentAlert(this.errorTitle, this.errorMessage);
             });
 
       } else {
         // User is signed-out of Facebook.
         firebase.auth().signOut();
       }
-    }).catch((err) => {
-      console.log(err);
+    }).catch(err => {
+      this.presentAlert(this.errorTitle, this.errorMessage);
     });
   }
 
@@ -102,7 +114,7 @@ export class AuthService {
         result.user.photoURL,
       );
     }).catch(err => {
-      alert(err.message);
+      this.presentAlert(this.errorTitle, this.errorMessage);
     });
   }
 
@@ -113,15 +125,24 @@ export class AuthService {
         await firebase.auth().signOut();
         this._user.next(null);
       } catch (err) {
-        console.log(err);
+        this.presentAlert(this.errorTitle, this.errorMessage);
       }
     } else {
       try {
         await firebase.auth().signOut();
       } catch (err) {
-        console.log(err);
+        this.presentAlert(this.errorTitle, this.errorMessage);
       }
     }
+  }
+
+  async presentAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['OK']
+    });
+    await alert.present();
   }
 
   setCurrentUser(uid: string, email: string, displayName: string, photoURL: string) {
@@ -147,5 +168,16 @@ export class AuthService {
   public getUserPhoneNumber(uid: string) {
     this.phoneNumberRef = this.db.object(`users/${uid}/profile/phoneNumber`);
     return this.phoneNumberRef.valueChanges();
+  }
+
+  ionViewWillEnter() {
+    this._initialiseTranslation();
+  }
+
+  _initialiseTranslation(): void {
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.errorTitle = this.translateService.instant('ERROR');
+      this.errorMessage = this.translateService.instant('ERRORMESSAGE');
+    });
   }
 }

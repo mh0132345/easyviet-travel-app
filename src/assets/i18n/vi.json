@@ -51,5 +51,8 @@
     "SUCCESS": "Giao dịch thành công! Vé đã được thêm vào tài khoản của bạn",
     "COMPLETE": "Đã xong",
     "FAIL": "Giao dịch thất bại!",
-    "INPUTCOUPON": "Nhập mã giảm giá"
+    "INPUTCOUPON": "Nhập mã giảm giá",
+    "ERROR": "Lỗi",
+    "ERRORMESSAGE": "Đã xảy ra lỗi. Làm ơn thử lại",
+    "LOGIN": "ĐĂNG NHẬP VỚI"
 }
