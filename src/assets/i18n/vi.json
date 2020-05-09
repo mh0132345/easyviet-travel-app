@@ -40,5 +40,16 @@
     "EVERYWEEK": "hàng tuần",
     "DEPARTDATE": "Ngày khởi hành",
     "CONTINUE": "Tiếp tục",
-    "CANCEL": "Quay lại"
+    "CANCEL": "Quay lại",
+    "STEP": "Bước",
+    "INVALIDFORM": "Làm ơn kiểm tra lại thông tin đã nhập",
+    "NOTE": "Ghi chú",
+    "COUPON": "Mã giảm giá",
+    "NUMTICKETS": "Số vé",
+    "PAYMENT": "Thanh toán",
+    "TOTAL": "Tổng tiền",
+    "SUCCESSS": "Giao dịch thành công! Vé đã được thêm vào tài khoản của bạn",
+    "COMPLETE": "Đã xong",
+    "FAIL": "Giao dịch thất bại!",
+    "INPUTCOUPON": "Nhập mã giảm giá"
 }

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ModalController, IonSlides, ToastController } from '@ionic/angular';
 import { Combo } from '../../tab1/combo.model';
 import { PayPal, PayPalPayment, PayPalConfiguration } from '@ionic-native/paypal/ngx';
+import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-bookings',
@@ -30,11 +31,27 @@ export class BookingsComponent implements OnInit {
   currency = 'USD';
   currencyIcon = '$';
 
+  stepTitle: string;
+  invalidFormNotice: string;
+  infoTitle: string;
+  customerNameTitle: string;
+  noteFieldTitle: string;
+  couponFieldTitle: string;
+  numTicketFieldTitle: string;
+  paymentTitle: string;
+  totalPriceTitle: string;
+  successMessage: string;
+  failMessage: string;
+  completeButtonTitle: string;
+  continueButtonTitle: string;
+  inputCouponTitle: string;
+
   constructor(
     private modalCtrl: ModalController,
     public formBuilder: FormBuilder,
     private payPal: PayPal,
     private toastCtrl: ToastController,
+    private translateService: TranslateService,
   ) {
     this.slideOneForm = formBuilder.group({
       name: [''],
@@ -51,6 +68,7 @@ export class BookingsComponent implements OnInit {
 
   ionViewDidEnter() {
     this.viewEntered = true;
+    this._initialiseTranslation();
   }
 
   toogleCoupon() {
@@ -175,9 +193,67 @@ export class BookingsComponent implements OnInit {
 
   async presentFailPayment() {
     const toast = await this.toastCtrl.create({
-      message: 'Payment failed',
+      message: this.failMessage,
       duration: 2000
     });
     toast.present();
+  }
+
+  _initialiseTranslation(): void {
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.stepTitle = this.translateService.instant('STEP');
+      this.invalidFormNotice = this.translateService.instant('INVALIDFORM');
+      this.infoTitle = this.translateService.instant('INFO');
+      this.customerNameTitle = this.translateService.instant('CUSTOMERNAME');
+      this.noteFieldTitle = this.translateService.instant('NOTE');
+      this.couponFieldTitle = this.translateService.instant('COUPON');
+      this.numTicketFieldTitle = this.translateService.instant('NUMTICKETS');
+      this.paymentTitle = this.translateService.instant('PAYMENT');
+      this.totalPriceTitle = this.translateService.instant('TOTAL');
+      this.successMessage = this.translateService.instant('SUCCESS');
+      this.failMessage = this.translateService.instant('FAIL');
+      this.completeButtonTitle = this.translateService.instant('COMPLETE');
+      this.continueButtonTitle = this.translateService.instant('CONTINUE');
+      this.inputCouponTitle = this.translateService.instant('INPUTCOUPON');
+    });
+    this.translateService.get('STEP').subscribe((res: string) => {
+      this.stepTitle = res;
+    });
+    this.translateService.get('INVALIDFORM').subscribe((res: string) => {
+      this.invalidFormNotice = res;
+    });
+    this.translateService.get('INFO').subscribe((res: string) => {
+      this.infoTitle = res;
+    });
+    this.translateService.get('NOTE').subscribe((res: string) => {
+      this.noteFieldTitle = res;
+    });
+    this.translateService.get('COUPON').subscribe((res: string) => {
+      this.couponFieldTitle = res;
+    });
+    this.translateService.get('NUMTICKETS').subscribe((res: string) => {
+      this.numTicketFieldTitle = res;
+    });
+    this.translateService.get('PAYMENT').subscribe((res: string) => {
+      this.paymentTitle = res;
+    });
+    this.translateService.get('TOTAL').subscribe((res: string) => {
+      this.totalPriceTitle = res;
+    });
+    this.translateService.get('SUCCESS').subscribe((res: string) => {
+      this.successMessage = res;
+    });
+    this.translateService.get('FAIL').subscribe((res: string) => {
+      this.failMessage = res;
+    });
+    this.translateService.get('COMPLETE').subscribe((res: string) => {
+      this.completeButtonTitle = res;
+    });
+    this.translateService.get('CONTINUE').subscribe((res: string) => {
+      this.continueButtonTitle = res;
+    });
+    this.translateService.get('INPUTCOUPON').subscribe((res: string) => {
+      this.inputCouponTitle = res;
+    });
   }
 }

@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Tab3Page } from './tab3.page';
-import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
 import { StarRatingModule } from 'ionic5-star-rating';
 import { TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
@@ -20,7 +19,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     CommonModule,
     FormsModule,
     StarRatingModule,
-    ExploreContainerComponentModule,
     RouterModule.forChild([{ path: '', component: Tab3Page }]),
     TranslateModule.forChild({
       loader: {

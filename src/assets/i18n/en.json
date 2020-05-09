@@ -40,5 +40,16 @@
     "EVERYWEEK": "every week",
     "DEPARTDATE": "Departure date",
     "CONTINUE": "Continue",
-    "CANCEL": "Cancel"
+    "CANCEL": "Cancel",
+    "STEP": "Step",
+    "INVALIDFORM": "Please fill out all details accurately",
+    "NOTE": "Note",
+    "COUPON": "Coupon",
+    "NUMTICKETS": "Number of tickets",
+    "PAYMENT": "Pay",
+    "TOTAL": "Total price",
+    "SUCCESSS": "Success! Ticket is added to your account",
+    "COMPLETE": "Complete",
+    "FAIL": "Payment failed!",
+    "INPUTCOUPON": "Input your coupon"
 }
