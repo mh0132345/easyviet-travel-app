@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NavController, ModalController, LoadingController } from '@ionic/angular';
 import { Combo } from '../combo.model';
 import { ComboService } from '../combo.service';
@@ -48,6 +48,7 @@ export class ComboDetailPage implements OnInit, OnDestroy {
     private modalCtrl: ModalController,
     private ticketService: TicketService,
     private translateService: TranslateService,
+    private router: Router,
   ) {
     this.translateService.get('MON').subscribe((res: string) => {
       this.mon = res;
@@ -178,6 +179,7 @@ export class ComboDetailPage implements OnInit, OnDestroy {
               .subscribe(() => {
                 loadingEl.dismiss();
               });
+              this.router.navigateByUrl('/success');
             });
           }
       });

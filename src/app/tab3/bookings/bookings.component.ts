@@ -40,9 +40,7 @@ export class BookingsComponent implements OnInit {
   numTicketFieldTitle: string;
   paymentTitle: string;
   totalPriceTitle: string;
-  successMessage: string;
   failMessage: string;
-  completeButtonTitle: string;
   continueButtonTitle: string;
   inputCouponTitle: string;
 
@@ -210,9 +208,7 @@ export class BookingsComponent implements OnInit {
       this.numTicketFieldTitle = this.translateService.instant('NUMTICKETS');
       this.paymentTitle = this.translateService.instant('PAYMENT');
       this.totalPriceTitle = this.translateService.instant('TOTAL');
-      this.successMessage = this.translateService.instant('SUCCESS');
       this.failMessage = this.translateService.instant('FAIL');
-      this.completeButtonTitle = this.translateService.instant('COMPLETE');
       this.continueButtonTitle = this.translateService.instant('CONTINUE');
       this.inputCouponTitle = this.translateService.instant('INPUTCOUPON');
     });
@@ -240,14 +236,8 @@ export class BookingsComponent implements OnInit {
     this.translateService.get('TOTAL').subscribe((res: string) => {
       this.totalPriceTitle = res;
     });
-    this.translateService.get('SUCCESS').subscribe((res: string) => {
-      this.successMessage = res;
-    });
     this.translateService.get('FAIL').subscribe((res: string) => {
       this.failMessage = res;
-    });
-    this.translateService.get('COMPLETE').subscribe((res: string) => {
-      this.completeButtonTitle = res;
     });
     this.translateService.get('CONTINUE').subscribe((res: string) => {
       this.continueButtonTitle = res;

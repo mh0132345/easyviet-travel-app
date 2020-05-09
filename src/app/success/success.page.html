@@ -1,0 +1,16 @@
+<ion-content>
+  <ion-label class="ion-text-center"> {{ successMessage }}</ion-label>
+</ion-content>
+
+<ion-footer>
+  <ion-button
+    expand="block"                 
+    [routerLink]="[
+      '/',
+      'tabs',
+      'tab3'
+    ]"
+  >
+    {{ completeButtonTitle }}
+  </ion-button>
+</ion-footer>
