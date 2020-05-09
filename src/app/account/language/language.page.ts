@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-language',
@@ -8,7 +9,7 @@ import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 })
 export class LanguagePage implements OnInit {
   language: string;
-  constructor(private translateService: TranslateService) { }
+  constructor(private translateService: TranslateService, private storage: Storage) { }
 
   ngOnInit() {
   }
@@ -23,9 +24,11 @@ export class LanguagePage implements OnInit {
   }
   setVietnamese() {
     this.translateService.use('vi');
+    this.storage.set('ionicLang', 'vi');
   }
 
   setEnglish() {
     this.translateService.use('en');
+    this.storage.set('ionicLang', 'en');
   }
 }

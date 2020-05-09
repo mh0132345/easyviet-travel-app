@@ -20,8 +20,13 @@ import { PayPal } from '@ionic-native/paypal/ngx';
 import { TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { IonicStorageModule } from '@ionic/storage';
 
 firebase.initializeApp(environment.firebaseConfig);
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [AppComponent],
@@ -41,7 +46,8 @@ firebase.initializeApp(environment.firebaseConfig);
         deps: [HttpClient]
       }
     }),
-    HttpClientModule
+    HttpClientModule,
+    IonicStorageModule.forRoot(),
   ],
   providers: [
     Facebook,
@@ -53,7 +59,3 @@ firebase.initializeApp(environment.firebaseConfig);
   bootstrap: [AppComponent]
 })
 export class AppModule {}
-
-export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-}
