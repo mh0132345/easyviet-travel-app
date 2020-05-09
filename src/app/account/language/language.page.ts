@@ -9,7 +9,9 @@ import { Storage } from '@ionic/storage';
 })
 export class LanguagePage implements OnInit {
   language: string;
-  constructor(private translateService: TranslateService, private storage: Storage) { }
+  storage = new Storage({name: '__ionicTravelApp'});
+
+  constructor(private translateService: TranslateService) { }
 
   ngOnInit() {
   }

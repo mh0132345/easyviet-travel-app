@@ -12,13 +12,13 @@ import { Storage } from '@ionic/storage';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
+  storage = new Storage({name: '__ionicTravelApp'});
 
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private translateService: TranslateService,
-    private storage: Storage,
   ) {
     this.initializeApp();
   }
