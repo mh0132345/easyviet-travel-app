@@ -4,6 +4,7 @@ import { FavCombosService } from 'src/app/tab2/fav-combos.service';
 import { LoadingController, ToastController, ModalController } from '@ionic/angular';
 import { Combo } from '../combo.model';
 import { Subscription } from 'rxjs';
+import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-search-page',
@@ -16,6 +17,9 @@ export class SearchPageComponent implements OnInit, OnDestroy {
   loadedCombos: Combo[] = [];
   allCombos: Combo[] = [];
   private combosSub: Subscription;
+  waitMessage: string;
+  addFavMessage: string;
+  searchMessage: string;
 
   constructor(
     private comboService: ComboService,
@@ -23,11 +27,12 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
     private modalCtrl: ModalController,
+    private translateService: TranslateService,
   ) { }
 
   ngOnInit() {
     this.loadingCtrl.create({
-      message: 'Vui lòng chờ một chút...'
+      message: this.waitMessage
     })
     .then(loadingEl => {
       loadingEl.present();
@@ -40,12 +45,10 @@ export class SearchPageComponent implements OnInit, OnDestroy {
   }
 
   search() {
-    console.log(this.searchInput);
     if (this.searchInput === '') {
       this.loadedCombos = this.allCombos;
     } else {
       this.comboService.findCombo(this.searchInput).subscribe(combos => {
-        console.log(combos);
         this.loadedCombos = combos;
       });
     }
@@ -63,7 +66,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
       .create({
         color: 'dark',
         duration: 2000,
-        message: 'Đã thêm vào yêu thích',
+        message: this.addFavMessage,
       })
       .then(toast => {
         toast.present();
@@ -72,5 +75,26 @@ export class SearchPageComponent implements OnInit, OnDestroy {
 
   closeModal() {
     this.modalCtrl.dismiss();
+  }
+
+  ionViewDidEnter() {
+    this._initialiseTranslation();
+  }
+
+  _initialiseTranslation(): void {
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.addFavMessage = this.translateService.instant('ADDFAV');
+      this.waitMessage = this.translateService.instant('WAIT');
+      this.searchMessage = this.translateService.instant('SEARCH');
+    });
+    this.translateService.get('ADDFAV').subscribe((res: string) => {
+      this.addFavMessage = res;
+    });
+    this.translateService.get('WAIT').subscribe((res: string) => {
+      this.waitMessage = res;
+    });
+    this.translateService.get('SEARCH').subscribe((res: string) => {
+      this.searchMessage = res;
+    });
   }
 }

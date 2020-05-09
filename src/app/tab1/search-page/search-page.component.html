@@ -11,7 +11,7 @@
           [(ngModel)]="searchInput"
           debounce=1000
           searchIcon=null
-          placeholder="Bạn muốn đi đâu"
+          placeholder="{{ searchMessage }}"
           (ionChange)=search()
         >
         </ion-searchbar>
