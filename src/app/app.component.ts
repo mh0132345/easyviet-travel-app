@@ -30,8 +30,10 @@ export class AppComponent {
       this.storage.get('ionicLang').then((lang) => {
         if (!lang) {
           this.translateService.setDefaultLang('vi');
+          this.translateService.use('vi');
         } else {
           this.translateService.setDefaultLang(lang);
+          this.translateService.use(lang);
         }
       });
     });

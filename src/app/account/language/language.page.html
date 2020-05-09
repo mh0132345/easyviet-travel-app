@@ -1,19 +1,25 @@
 <ion-header>
   <ion-toolbar>
     <ion-back-button icon="arrow-back-outline" slot="start" text=""></ion-back-button>
-    <ion-title class="ion-text-center"> {{ this.language }} </ion-title>
+    <ion-title class="ion-text-center"> {{ languageTitle }} </ion-title>
   </ion-toolbar>
 </ion-header>
   
 <ion-content>
   <ion-grid>
     <ion-row>
-      <ion-col>
-        <ion-button color="primary" expand="block" (click)="setVietnamese()"> Tiếng Việt</ion-button>
+      <ion-col *ngIf="language==='vi'">
+        <ion-button color="primary" expand="block"> Tiếng Việt</ion-button>
+      </ion-col>
+      <ion-col *ngIf="language!=='vi'">
+        <ion-button expand="block" fill="outline" (click)="setVietnamese()"> Tiếng Việt</ion-button>
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col>
+      <ion-col *ngIf="language==='en'">
+        <ion-button color="primary" expand="block"> English</ion-button>
+      </ion-col>
+      <ion-col *ngIf="language!=='en'">
         <ion-button expand="block" fill="outline" (click)="setEnglish()"> English</ion-button>
       </ion-col>
     </ion-row>
