@@ -18,6 +18,7 @@ export class ComboDetailPage implements OnInit, OnDestroy {
   combo: Combo;
   private comboSub: Subscription;
   public availableDay: string;
+
   freeWifiTitle: string;
   hotelTitle: string;
   breakfastTitle: string;
@@ -27,6 +28,12 @@ export class ComboDetailPage implements OnInit, OnDestroy {
   bookButtonTitle: string;
   starTitle: string;
   waitMessage: string;
+  everyWeek: string;
+  departDateTitle: string;
+  continueButtonTitle: string;
+  cancelButtonTitle: string;
+  from: string;
+
   mon: string;
   tue: string;
   wed: string;
@@ -34,11 +41,6 @@ export class ComboDetailPage implements OnInit, OnDestroy {
   fri: string;
   sat: string;
   sun: string;
-  everyWeek: string;
-  departDateTitle: string;
-  continueButtonTitle: string;
-  cancelButtonTitle: string;
-  from: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -127,7 +129,7 @@ export class ComboDetailPage implements OnInit, OnDestroy {
     const options: CalendarModalOptions = {
       title: this.departDateTitle,
       from: new Date(),
-      to: new Date(2020, 30, 7),
+      to: new Date(new Date().getTime() + 2 * 30 * 24 * 3600 * 1000), // 2 months from Today
       disableWeeks,
       monthFormat: 'MM/YYYY',
       doneLabel: this.continueButtonTitle,
@@ -194,10 +196,6 @@ export class ComboDetailPage implements OnInit, OnDestroy {
 
   ionViewWillEnter() {
     this._initialiseTranslation();
-  }
-
-  ionViewDidEnter() {
-
   }
 
   _initialiseTranslation(): void {
