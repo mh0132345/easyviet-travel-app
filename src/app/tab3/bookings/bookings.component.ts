@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController, IonSlides, ToastController } from '@ionic/angular';
 import { Combo } from '../../tab1/combo.model';
 import { PayPal, PayPalPayment, PayPalConfiguration } from '@ionic-native/paypal/ngx';
@@ -52,9 +52,14 @@ export class BookingsComponent implements OnInit {
     private translateService: TranslateService,
   ) {
     this.slideOneForm = formBuilder.group({
-      name: [''],
+      name: ['', Validators.compose([Validators.maxLength(50), Validators.required])],
       phoneNumber: [''],
-      email: [''],
+      email: ['', Validators.compose([
+          Validators.maxLength(100),
+          Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$'),
+          Validators.required
+        ])
+      ],
       note: [''],
       coupon: [''],
     });
@@ -82,6 +87,7 @@ export class BookingsComponent implements OnInit {
   }
 
   prev() {
+    this.submitAttempt = false;
     this.bookingSlider.getActiveIndex().then(index => {
       if (index !== 0) {
         this.bookingSlider.slidePrev();
@@ -107,10 +113,8 @@ export class BookingsComponent implements OnInit {
     if (!this.slideOneForm.valid) {
         this.bookingSlider.slideTo(0);
     } else {
-        console.log('Success!');
-        console.log(this.slideOneForm.value);
+        this.next();
     }
-    this.bookingSlider.slideNext();
   }
 
   onBookCombo() {
@@ -130,11 +134,12 @@ export class BookingsComponent implements OnInit {
   }
 
   onSavingCustomerInfo() {
+    this.discount = 0;
     if (this.selectedCombo.coupon[this.slideOneForm.value.coupon]) {
       this.discount = this.selectedCombo.coupon[this.slideOneForm.value.coupon];
     }
     this.totalPrice = this.selectedCombo.price * this.numOfTickets - this.discount;
-    this.next();
+    this.save();
   }
 
   payWithPaypal() {
@@ -152,8 +157,7 @@ export class BookingsComponent implements OnInit {
         const payment = new PayPalPayment(totalPrice.toFixed(2), this.currency, 'Description', 'sale');
         console.log(payment);
         this.payPal.renderSinglePaymentUI(payment).then((res) => {
-          console.log(res);
-          if (res.state === 'approved') {
+          if (res.response.state === 'approved') {
             this.onBookCombo();
           }
           // Successfully paid
@@ -220,6 +224,9 @@ export class BookingsComponent implements OnInit {
     });
     this.translateService.get('INFO').subscribe((res: string) => {
       this.infoTitle = res;
+    });
+    this.translateService.get('CUSTOMERNAME').subscribe((res: string) => {
+      this.customerNameTitle = res;
     });
     this.translateService.get('NOTE').subscribe((res: string) => {
       this.noteFieldTitle = res;

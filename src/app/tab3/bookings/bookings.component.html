@@ -9,18 +9,18 @@
 </ion-header>
 
 <ion-content>
-  <ion-slides #bookingSlider>
+  <ion-slides #bookingSlider [options]="{ allowTouchMove: false }">
     <ion-slide>
       <ion-grid>
-        <p *ngIf="submitAttempt" style="color: #ea6153;">
-          {{ invalidFormNotice }}
-        </p>
         <ion-row>
           <ion-col>
             <ion-label>{{ stepTitle }} 2/4 </ion-label>
             <ion-label>{{ infoTitle }}</ion-label>
           </ion-col>
         </ion-row>
+        <p *ngIf="submitAttempt" style="color: #ea6153;">
+          {{ invalidFormNotice }}
+        </p>
         <ion-list>
           <form [formGroup]="slideOneForm">
             <ion-item>
@@ -84,8 +84,16 @@
       <ion-grid>
         <ion-row>
           <ion-col>
-            <ion-label>{{ stepTitle }} 3/4 </ion-label>
+            <ion-label >{{ stepTitle }} 3/3 </ion-label>
             <ion-label>{{ paymentTitle }}</ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="4" >
+            <ion-label>{{ totalPriceTitle }}</ion-label>
+          </ion-col>
+          <ion-col offset="4" size="4">
+            <ion-label> {{ totalPrice }}đ</ion-label>
           </ion-col>
         </ion-row>
         <ion-list>
@@ -101,25 +109,6 @@
 
         <ion-footer>
           <ion-button (click)="next()">
-            {{ paymentTitle }}
-          </ion-button>
-        </ion-footer>
-      </ion-grid>
-    </ion-slide>
-    <ion-slide>
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <ion-label>{{ stepTitle }} 3/3</ion-label>
-            <ion-label>{{ paymentTitle }}</ion-label>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-label>{{ totalPriceTitle }}</ion-label>
-          <ion-label> {{ totalPrice }}đ</ion-label>
-        </ion-row>
-        <ion-footer>
-          <ion-button (click)="onBookCombo()">
             {{ paymentTitle }}
           </ion-button>
         </ion-footer>
