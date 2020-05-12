@@ -8,6 +8,7 @@ import { BookingsComponent } from 'src/app/tab3/bookings/bookings.component';
 import { Subscription } from 'rxjs';
 import { CalendarModal, CalendarModalOptions, DayConfig, CalendarResult } from 'ion2-calendar';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
+import { PaymentComponent } from 'src/app/tab3/payment/payment.component';
 
 @Component({
   selector: 'app-combo-detail',
@@ -140,51 +141,61 @@ export class ComboDetailPage implements OnInit, OnDestroy {
       component: CalendarModal,
       componentProps: { options }
     });
-
     myCalendar.present();
 
-    const event: any = await myCalendar.onDidDismiss();
-    const startDate: CalendarResult = event.data;
+    const calEvent: any = await myCalendar.onDidDismiss();
+    const startDate: CalendarResult = calEvent.data;
+
     if (startDate) {
-      this.modalCtrl
-      .create({
+      const inforForm = await this.modalCtrl.create({
         component: BookingsComponent,
         componentProps: { selectedCombo: this.combo }
-      })
-      .then(modalEl => {
-        modalEl.present();
-        return modalEl.onDidDismiss();
-      })
-      .then(resultData => {
-        if (resultData.role === 'confirm') {
+      });
+      inforForm.present();
+
+      const infoEvent: any = await inforForm.onDidDismiss();
+      const customerInfo = infoEvent.data.bookingData;
+      if (customerInfo) {
+        const paymentPage = await this.modalCtrl.create({
+          component: PaymentComponent,
+          componentProps: {
+            discount: customerInfo.discount,
+            price: this.combo.price,
+            quantity: customerInfo.numOfTickets
+          }
+        });
+        paymentPage.present();
+
+        const paymentEvent: any = await paymentPage.onDidDismiss();
+        console.log(paymentEvent);
+        if (paymentEvent.role === 'confirm') {
           this.loadingCtrl
             .create({
               message: this.waitMessage
             })
             .then(loadingEl => {
               loadingEl.present();
-              const data = resultData.data.bookingData;
               this.ticketService.addTicket(
                 this.combo.id,
                 this.combo.title,
                 this.combo.imgUrl,
                 this.combo.rate,
                 this.combo.startDest,
-                data.name,
-                data.phoneNumber,
-                data.email,
-                data.note,
-                data.coupon,
+                customerInfo.name,
+                customerInfo.phoneNumber,
+                customerInfo.email,
+                customerInfo.note,
+                customerInfo.coupon,
                 startDate.dateObj,
-                data.numOfTickets
+                customerInfo.numOfTickets
               )
               .subscribe(() => {
                 loadingEl.dismiss();
               });
               this.router.navigateByUrl('/success');
             });
-          }
-      });
+        }
+      }
     }
   }
 

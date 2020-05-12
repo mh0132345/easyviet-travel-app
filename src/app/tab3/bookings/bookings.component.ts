@@ -1,10 +1,8 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ModalController, IonSlides, Platform, AlertController } from '@ionic/angular';
+import { ModalController, Platform, AlertController } from '@ionic/angular';
 import { Combo } from '../../tab1/combo.model';
-import { PayPal, PayPalPayment, PayPalConfiguration } from '@ionic-native/paypal/ngx';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
-import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 
 @Component({
   selector: 'app-bookings',
@@ -13,8 +11,6 @@ import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 })
 export class BookingsComponent implements OnInit {
   @Input() selectedCombo: Combo;
-  @ViewChild('bookingSlider', {static: true}) bookingSlider: IonSlides;
-  public payPalConfig?: IPayPalConfig;
   public isPlatformBrowser: boolean;
 
   public slideOneForm: FormGroup;
@@ -51,7 +47,6 @@ export class BookingsComponent implements OnInit {
   constructor(
     private modalCtrl: ModalController,
     public formBuilder: FormBuilder,
-    private payPal: PayPal,
     private translateService: TranslateService,
     private platform: Platform,
     private alertController: AlertController,
@@ -91,19 +86,11 @@ export class BookingsComponent implements OnInit {
     this.saveCard = !this.saveCard;
   }
 
-  next() {
-    this.bookingSlider.slideNext();
-  }
-
   prev() {
-    this.submitAttempt = false;
-    this.bookingSlider.getActiveIndex().then(index => {
-      if (index !== 0) {
-        this.bookingSlider.slidePrev();
-      } else {
-        this.modalCtrl.dismiss();
-      }
-    });
+    this.modalCtrl.dismiss(
+      {},
+      'back'
+    );
   }
 
   increaseNumTickets() {
@@ -116,16 +103,6 @@ export class BookingsComponent implements OnInit {
     this.disabledButton = this.numOfTickets <= 1;
   }
 
-  save() {
-    this.submitAttempt = true;
-
-    if (!this.slideOneForm.valid) {
-        this.bookingSlider.slideTo(0);
-    } else {
-        this.next();
-    }
-  }
-
   onBookCombo() {
     this.modalCtrl.dismiss(
       {
@@ -136,6 +113,7 @@ export class BookingsComponent implements OnInit {
           note: this.slideOneForm.value.note,
           coupon: this.slideOneForm.value.coupon,
           numOfTickets: this.numOfTickets,
+          discount: this.discount
         }
       },
       'confirm'
@@ -143,64 +121,16 @@ export class BookingsComponent implements OnInit {
   }
 
   onSavingCustomerInfo() {
-    this.save();
-    this.discount = 0;
-    if (this.selectedCombo.coupon[this.slideOneForm.value.coupon]) {
-      this.discount = this.selectedCombo.coupon[this.slideOneForm.value.coupon];
+    this.submitAttempt = true;
+    if (this.slideOneForm.valid) {
+      this.discount = 0;
+      if (this.selectedCombo.coupon[this.slideOneForm.value.coupon]) {
+        this.discount = this.selectedCombo.coupon[this.slideOneForm.value.coupon];
+      }
+      this.totalPrice = this.selectedCombo.price * this.numOfTickets - this.discount;
+      this.onBookCombo();
     }
-    this.totalPrice = this.selectedCombo.price * this.numOfTickets - this.discount;
-    this.initConfig(this.selectedCombo.price);
-  }
-
-  payWithPaypal() {
-    const sandBoxClientId = 'AU2oJ_5sjp1cSi5NmPRCN5JhizNgrxw6vTXQxa0fGFH73WVgsfjDs_eBC_HAmJ7lDS6wT5E1nzgvMIbF';
-    const totalPrice = this.totalPrice * this.currencyConvertRate;
-    this.payPal.init({
-      PayPalEnvironmentProduction: 'YOUR_PRODUCTION_CLIENT_ID',
-      PayPalEnvironmentSandbox: sandBoxClientId
-    }).then(() => {
-      // Environments: PayPalEnvironmentNoNetwork, PayPalEnvironmentSandbox, PayPalEnvironmentProduction
-      this.payPal.prepareToRender('PayPalEnvironmentSandbox', new PayPalConfiguration({
-        // Only needed if you get an "Internal Service Error" after PayPal login!
-        // payPalShippingAddressOption: 2 // PayPalShippingAddressOptionPayPal
-      })).then(() => {
-        const payment = new PayPalPayment(totalPrice.toFixed(2), this.currency, 'Description', 'sale');
-        console.log(payment);
-        this.payPal.renderSinglePaymentUI(payment).then((res) => {
-          if (res.response.state === 'approved') {
-            this.onBookCombo();
-          }
-          // Successfully paid
-
-          // Example sandbox response
-          //
-          // {
-          //   "client": {
-          //     "environment": "sandbox",
-          //     "product_name": "PayPal iOS SDK",
-          //     "paypal_sdk_version": "2.16.0",
-          //     "platform": "iOS"
-          //   },
-          //   "response_type": "payment",
-          //   "response": {
-          //     "id": "PAY-1AB23456CD789012EF34GHIJ",
-          //     "state": "approved",
-          //     "create_time": "2016-10-03T13:33:33Z",
-          //     "intent": "sale"
-          //   }
-          // }
-        }, () => {
-          // Error or render dialog closed without being successful
-          this.presentAlert(this.failMessage, this.errorMessage);
-        });
-      }, () => {
-        // Error in configuration
-        console.log('Error in configuration');
-      });
-    }, () => {
-      // Error in initialization, maybe PayPal isn't supported or something else
-      console.log('Error in initialization');
-    });
+    // this.initConfig(this.selectedCombo.price);
   }
 
   async presentAlert(header: string, message: string) {
@@ -210,71 +140,6 @@ export class BookingsComponent implements OnInit {
       buttons: ['OK']
     });
     await alert.present();
-  }
-
-  private initConfig(price: number): void {
-    const sandBoxClientId = 'AU2oJ_5sjp1cSi5NmPRCN5JhizNgrxw6vTXQxa0fGFH73WVgsfjDs_eBC_HAmJ7lDS6wT5E1nzgvMIbF';
-    const totalPrice = price * this.numOfTickets * this.currencyConvertRate;
-    const itemPrice = price * this.currencyConvertRate;
-    const discount = this.discount * this.currencyConvertRate;
-    this.payPalConfig = {
-      currency: 'USD',
-      clientId: sandBoxClientId,
-      // tslint:disable-next-line: no-angle-bracket-type-assertion
-      createOrderOnClient: (data) => <ICreateOrderRequest> {
-        intent: 'CAPTURE',
-        purchase_units: [
-          {
-            amount: {
-              currency_code: 'USD',
-              value: totalPrice.toFixed(2),
-              breakdown: {
-                item_total: {
-                  currency_code: 'USD',
-                  value: totalPrice.toFixed(2)
-                },
-                discount: {
-                  currency_code: 'USD',
-                  value: discount.toFixed(2)
-                }
-              }
-            },
-            items: [
-              {
-                name: 'Travel combo',
-                quantity: this.numOfTickets.toString(),
-                category: 'DIGITAL_GOODS',
-                unit_amount: {
-                  currency_code: 'USD',
-                  value: itemPrice.toFixed(2),
-                },
-              }
-            ]
-          }
-        ]
-      },
-      advanced: {
-        commit: 'true'
-      },
-      style: {
-        label: 'paypal',
-        layout: 'vertical'
-      },
-      onApprove: (data, actions) => {
-        actions.order.get().then((details: any) => {
-          console.log('onApprove - you can get full order details inside onApprove: ', details);
-        });
-      },
-      onClientAuthorization: () => {
-        this.onBookCombo();
-      },
-      onCancel: () => {
-        this.presentAlert(this.failMessage, this.errorMessage);
-      },
-      onError: err => {
-        this.presentAlert(this.failMessage, err);
-      },
-    };
   }
 
   _initialiseTranslation(): void {

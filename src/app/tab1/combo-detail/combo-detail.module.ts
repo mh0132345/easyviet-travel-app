@@ -11,6 +11,7 @@ import { TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NgxPayPalModule } from 'ngx-paypal';
+import { PaymentComponent } from 'src/app/tab3/payment/payment.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -34,7 +35,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     }),
     NgxPayPalModule,
   ],
-  declarations: [ComboDetailPage, BookingsComponent],
-  entryComponents: [BookingsComponent]
+  declarations: [ComboDetailPage, BookingsComponent, PaymentComponent],
+  entryComponents: [BookingsComponent, PaymentComponent]
 })
 export class ComboDetailPageModule {}

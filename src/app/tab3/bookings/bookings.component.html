@@ -5,110 +5,81 @@
         <ion-icon slot="start" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
+    <ion-label>{{ stepTitle }} 2/4 </ion-label>
+    <ion-label>{{ infoTitle }}</ion-label>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-slides #bookingSlider [options]="{ allowTouchMove: false }">
-    <ion-slide>
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <ion-label>{{ stepTitle }} 2/4 </ion-label>
-            <ion-label>{{ infoTitle }}</ion-label>
-          </ion-col>
-        </ion-row>
-        <p *ngIf="submitAttempt" style="color: #ea6153;">
-          {{ invalidFormNotice }}
-        </p>
-        <ion-list>
-          <form [formGroup]="slideOneForm">
-            <ion-item>
-              <ion-label position="floating">*{{ customerNameTitle }}</ion-label>
-              <ion-input formControlName="name" type="text"></ion-input>
-            </ion-item>
+  <ion-grid>
+    <p *ngIf="submitAttempt" style="color: #ea6153;">
+      {{ invalidFormNotice }}
+    </p>
+    <ion-list>
+      <form [formGroup]="slideOneForm">
+        <ion-item>
+          <ion-label position="floating">*{{ customerNameTitle }}</ion-label>
+          <ion-input formControlName="name" type="text"></ion-input>
+        </ion-item>
 
-            <ion-item>
-              <ion-label position="floating">+84</ion-label>
-              <ion-input formControlName="phoneNumber" type="text"></ion-input>
-            </ion-item>
+        <ion-item>
+          <ion-label position="floating">+84</ion-label>
+          <ion-input formControlName="phoneNumber" type="text"></ion-input>
+        </ion-item>
 
-            <ion-item>
-              <ion-label position="floating">*Email</ion-label>
-              <ion-input formControlName="email" type="text"></ion-input>
-            </ion-item>
+        <ion-item>
+          <ion-label position="floating">*Email</ion-label>
+          <ion-input formControlName="email" type="text"></ion-input>
+        </ion-item>
 
-            <ion-item>
-              <ion-label position="floating">{{ noteFieldTitle }}</ion-label>
-              <ion-input formControlName="note" type="text"></ion-input>
-            </ion-item>
+        <ion-item>
+          <ion-label position="floating">{{ noteFieldTitle }}</ion-label>
+          <ion-input formControlName="note" type="text"></ion-input>
+        </ion-item>
 
-            <ion-item>
-              <ion-label>{{ couponFieldTitle }}</ion-label>
-              <ion-toggle slot="end" (ionChange)="toogleCoupon()"></ion-toggle>       
+        <ion-item>
+          <ion-label>{{ couponFieldTitle }}</ion-label>
+          <ion-toggle slot="end" (ionChange)="toogleCoupon()"></ion-toggle>       
+        </ion-item>
+        <ion-item *ngIf="useCoupon">
+          <ion-label position="floating">{{ inputCouponTitle }}</ion-label>
+          <ion-input formControlName="coupon" type="text"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{ numTicketFieldTitle }}</ion-label>
+          <div slot="end">
+            <ion-item lines="none">
+              <ion-button 
+                color="light" 
+                (click)="decreaseNumTickets()"
+                [disabled]="disabledButton"> 
+                <ion-icon name="remove-circle-outline"></ion-icon>
+              </ion-button>
+              <ion-label>
+                {{ numOfTickets }}
+              </ion-label>
+              <ion-button color="light" (click)="increaseNumTickets()">
+                <ion-icon name="add-circle-outline"></ion-icon>
+              </ion-button>
             </ion-item>
-            <ion-item *ngIf="useCoupon">
-              <ion-label position="floating">{{ inputCouponTitle }}</ion-label>
-              <ion-input formControlName="coupon" type="text"></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-label>{{ numTicketFieldTitle }}</ion-label>
-              <div slot="end">
-                <ion-item lines="none">
-                  <ion-button 
-                    color="light" 
-                    (click)="decreaseNumTickets()"
-                    [disabled]="disabledButton"> 
-                    <ion-icon name="remove-circle-outline"></ion-icon>
-                  </ion-button>
-                  <ion-label>
-                    {{ numOfTickets }}
-                  </ion-label>
-                  <ion-button color="light" (click)="increaseNumTickets()">
-                    <ion-icon name="add-circle-outline"></ion-icon>
-                  </ion-button>
-                </ion-item>
-              </div>
-            </ion-item>
-          </form>
-        </ion-list>
-        <ion-footer>
-          <ion-button (click)="onSavingCustomerInfo()">
+          </div>
+        </ion-item>
+      </form>
+    </ion-list>
+  </ion-grid>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6" offset="6">
+          <ion-button color="primary" expand="block" (click)="onSavingCustomerInfo()">
             {{ continueButtonTitle }}
           </ion-button>
-        </ion-footer>
-      </ion-grid>
-    </ion-slide>
-
-    <ion-slide>
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <ion-label >{{ stepTitle }} 3/3 </ion-label>
-            <ion-label>{{ paymentTitle }}</ion-label>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col size="4" >
-            <ion-label>{{ totalPriceTitle }}</ion-label>
-          </ion-col>
-          <ion-col offset="4" size="4">
-            <ion-label> {{ totalPrice }}đ</ion-label>
-          </ion-col>
-        </ion-row>
-        <ion-list>
-          <ion-button expand="block" (click)="payWithPaypal()">
-            <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/pp-acceptance-large.png" alt="Buy now with PayPal" />
-            Paypal Mobile (for test)
-          </ion-button>
-          <ion-button expand="block" (click)="next()">
-            {{ paymentTitle }} (for test)
-          </ion-button>
-        </ion-list>
-        <ion-footer>
-          <ngx-paypal [config]="payPalConfig"></ngx-paypal>
-        </ion-footer>
-      </ion-grid>
-    </ion-slide>
-  </ion-slides>
-</ion-content>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>

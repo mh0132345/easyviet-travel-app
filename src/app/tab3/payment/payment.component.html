@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="prev()">
+        <ion-icon slot="start" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-label >{{ stepTitle }} 3/3 </ion-label>
+    <ion-label>{{ paymentTitle }}</ion-label>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="4" >
+        <ion-label>{{ totalPriceTitle }}</ion-label>
+      </ion-col>
+      <ion-col offset="4" size="4">
+        <ion-label> {{ totalPrice }}đ</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-list>
+      <ion-button expand="block" (click)="payWithPaypal()">
+        Paypal Mobile (for test)
+      </ion-button>
+      <ion-button expand="block" (click)="onBookCombo()">
+        {{ paymentTitle }} (for test)
+      </ion-button>
+    </ion-list>
+  </ion-grid>
+</ion-content>
+<ion-footer>
+  <ngx-paypal [config]="payPalConfig"></ngx-paypal>
+</ion-footer>
