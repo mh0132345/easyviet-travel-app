@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ModalController, IonSlides, ToastController } from '@ionic/angular';
+import { ModalController, IonSlides, Platform, AlertController } from '@ionic/angular';
 import { Combo } from '../../tab1/combo.model';
 import { PayPal, PayPalPayment, PayPalConfiguration } from '@ionic-native/paypal/ngx';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
+import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 
 @Component({
   selector: 'app-bookings',
@@ -13,6 +14,8 @@ import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 export class BookingsComponent implements OnInit {
   @Input() selectedCombo: Combo;
   @ViewChild('bookingSlider', {static: true}) bookingSlider: IonSlides;
+  public payPalConfig?: IPayPalConfig;
+  public isPlatformBrowser: boolean;
 
   public slideOneForm: FormGroup;
   viewEntered = false;
@@ -41,6 +44,7 @@ export class BookingsComponent implements OnInit {
   paymentTitle: string;
   totalPriceTitle: string;
   failMessage: string;
+  errorMessage: string;
   continueButtonTitle: string;
   inputCouponTitle: string;
 
@@ -48,8 +52,9 @@ export class BookingsComponent implements OnInit {
     private modalCtrl: ModalController,
     public formBuilder: FormBuilder,
     private payPal: PayPal,
-    private toastCtrl: ToastController,
     private translateService: TranslateService,
+    private platform: Platform,
+    private alertController: AlertController,
   ) {
     this.slideOneForm = formBuilder.group({
       name: ['', Validators.compose([Validators.maxLength(50), Validators.required])],
@@ -66,7 +71,11 @@ export class BookingsComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    if (this.platform.is('cordova')) {
+      this.isPlatformBrowser = false;
+    } else {
+      this.isPlatformBrowser = true;
+    }
   }
 
   ionViewDidEnter() {
@@ -134,12 +143,13 @@ export class BookingsComponent implements OnInit {
   }
 
   onSavingCustomerInfo() {
+    this.save();
     this.discount = 0;
     if (this.selectedCombo.coupon[this.slideOneForm.value.coupon]) {
       this.discount = this.selectedCombo.coupon[this.slideOneForm.value.coupon];
     }
     this.totalPrice = this.selectedCombo.price * this.numOfTickets - this.discount;
-    this.save();
+    this.initConfig(this.selectedCombo.price);
   }
 
   payWithPaypal() {
@@ -181,7 +191,7 @@ export class BookingsComponent implements OnInit {
           // }
         }, () => {
           // Error or render dialog closed without being successful
-          this.presentFailPayment();
+          this.presentAlert(this.failMessage, this.errorMessage);
         });
       }, () => {
         // Error in configuration
@@ -193,12 +203,78 @@ export class BookingsComponent implements OnInit {
     });
   }
 
-  async presentFailPayment() {
-    const toast = await this.toastCtrl.create({
-      message: this.failMessage,
-      duration: 2000
+  async presentAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['OK']
     });
-    toast.present();
+    await alert.present();
+  }
+
+  private initConfig(price: number): void {
+    const sandBoxClientId = 'AU2oJ_5sjp1cSi5NmPRCN5JhizNgrxw6vTXQxa0fGFH73WVgsfjDs_eBC_HAmJ7lDS6wT5E1nzgvMIbF';
+    const totalPrice = price * this.numOfTickets * this.currencyConvertRate;
+    const itemPrice = price * this.currencyConvertRate;
+    const discount = this.discount * this.currencyConvertRate;
+    this.payPalConfig = {
+      currency: 'USD',
+      clientId: sandBoxClientId,
+      // tslint:disable-next-line: no-angle-bracket-type-assertion
+      createOrderOnClient: (data) => <ICreateOrderRequest> {
+        intent: 'CAPTURE',
+        purchase_units: [
+          {
+            amount: {
+              currency_code: 'USD',
+              value: totalPrice.toFixed(2),
+              breakdown: {
+                item_total: {
+                  currency_code: 'USD',
+                  value: totalPrice.toFixed(2)
+                },
+                discount: {
+                  currency_code: 'USD',
+                  value: discount.toFixed(2)
+                }
+              }
+            },
+            items: [
+              {
+                name: 'Travel combo',
+                quantity: this.numOfTickets.toString(),
+                category: 'DIGITAL_GOODS',
+                unit_amount: {
+                  currency_code: 'USD',
+                  value: itemPrice.toFixed(2),
+                },
+              }
+            ]
+          }
+        ]
+      },
+      advanced: {
+        commit: 'true'
+      },
+      style: {
+        label: 'paypal',
+        layout: 'vertical'
+      },
+      onApprove: (data, actions) => {
+        actions.order.get().then((details: any) => {
+          console.log('onApprove - you can get full order details inside onApprove: ', details);
+        });
+      },
+      onClientAuthorization: () => {
+        this.onBookCombo();
+      },
+      onCancel: () => {
+        this.presentAlert(this.failMessage, this.errorMessage);
+      },
+      onError: err => {
+        this.presentAlert(this.failMessage, err);
+      },
+    };
   }
 
   _initialiseTranslation(): void {
@@ -215,6 +291,7 @@ export class BookingsComponent implements OnInit {
       this.failMessage = this.translateService.instant('FAIL');
       this.continueButtonTitle = this.translateService.instant('CONTINUE');
       this.inputCouponTitle = this.translateService.instant('INPUTCOUPON');
+      this.errorMessage = this.translateService.instant('ERRORMESSAGE');
     });
     this.translateService.get('STEP').subscribe((res: string) => {
       this.stepTitle = res;
@@ -251,6 +328,9 @@ export class BookingsComponent implements OnInit {
     });
     this.translateService.get('INPUTCOUPON').subscribe((res: string) => {
       this.inputCouponTitle = res;
+    });
+    this.translateService.get('ERRORMESSAGE').subscribe((res: string) => {
+      this.errorMessage = res;
     });
   }
 }

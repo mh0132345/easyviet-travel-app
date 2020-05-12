@@ -97,20 +97,16 @@
           </ion-col>
         </ion-row>
         <ion-list>
-            <!-- <ion-item>
-              <a target="_blank" href="https://sandbox.nganluong.vn:8088/nl35/button_payment.php?receiver=mhspell2509@gmail.com&return_url=google.com&product_name=48854&price=4000000&comments=ghichu">
-                <img src="https://sandbox.nganluong.vn:8088/nl35/css/newhome/img/button/safe-pay-2.png" border="0" />
-              </a>
-            </ion-item> -->
-            <ion-item (click)="payWithPaypal()">
-              <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/pp-acceptance-large.png" alt="Buy now with PayPal" />
-            </ion-item>
-        </ion-list>
-
-        <ion-footer>
-          <ion-button (click)="next()">
-            {{ paymentTitle }}
+          <ion-button expand="block" (click)="payWithPaypal()">
+            <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/pp-acceptance-large.png" alt="Buy now with PayPal" />
+            Paypal Mobile (for test)
           </ion-button>
+          <ion-button expand="block" (click)="next()">
+            {{ paymentTitle }} (for test)
+          </ion-button>
+        </ion-list>
+        <ion-footer>
+          <ngx-paypal [config]="payPalConfig"></ngx-paypal>
         </ion-footer>
       </ion-grid>
     </ion-slide>
