@@ -30,7 +30,7 @@
       </ion-row>
     </div>
     <div *ngIf="loadedFavCombos && loadedFavCombos.length > 0">
-      <ion-row *ngFor="let combo of dummyArray; index as i">
+      <ion-row *ngFor="let combo of dummyArray; index as i" style="display: flex; justify-content: center;">
         <ion-col size=4>
           <ion-card style="position: relative;">
             <img [src]="loadedFavCombos[i*2].imgUrl">
@@ -55,8 +55,8 @@
             </ion-card-header>
           </ion-card>
         </ion-col>
-        <ion-col size=4 offset=2 *ngIf="loadedFavCombos[i*2+1]">
-          <ion-card>
+        <ion-col size=4 *ngIf="loadedFavCombos[i*2+1]">
+          <ion-card style="position: relative;">
             <img [src]="loadedFavCombos[i*2+1].imgUrl">
             <ion-button 
               fill="clear"
@@ -66,7 +66,7 @@
             >
               <ion-icon name="heart" color="danger"></ion-icon>
             </ion-button>
-            <ion-card-header
+            <ion-card-header style="padding: 0;"
               [routerLink]="[
                 '/',
                 'tabs',
