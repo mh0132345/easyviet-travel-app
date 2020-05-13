@@ -32,7 +32,7 @@
     <div *ngIf="loadedFavCombos && loadedFavCombos.length > 0">
       <ion-row *ngFor="let combo of dummyArray; index as i">
         <ion-col size=4>
-          <ion-card>
+          <ion-card style="position: relative;">
             <img [src]="loadedFavCombos[i*2].imgUrl">
             <ion-button 
               fill="clear"
@@ -42,7 +42,7 @@
             >
               <ion-icon name="heart" color="danger"></ion-icon>
             </ion-button>
-            <ion-card-header
+            <ion-card-header style="padding: 0;"
               [routerLink]="[
                 '/',
                 'tabs',

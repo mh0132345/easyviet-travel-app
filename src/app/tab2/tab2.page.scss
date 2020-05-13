@@ -10,6 +10,10 @@ ion-card {
 }
 
 ion-card-title {
+    margin-top: 12px;
+    margin-left: 8px;
+    margin-bottom: 12px;
+    margin-right: 8px;
     font-size: 12px;
     font-weight: 600;
     color: #021329;
@@ -23,6 +27,6 @@ img {
 }
 .fav-button {
   position:absolute;
-  top:5px;
-  right:5px;
+  top:2px;
+  right:2px;
 }

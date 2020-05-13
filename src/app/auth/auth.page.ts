@@ -13,6 +13,7 @@ export class AuthPage {
   private loading;
   private waitMessage: string;
   loginButtonTitle: string;
+  loginText: string;
 
   constructor(
     private authService: AuthService,
@@ -45,12 +46,16 @@ export class AuthPage {
     this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
       this.waitMessage = this.translateService.instant('WAIT');
       this.loginButtonTitle = this.translateService.instant('ERRORMESSAGE');
+      this.loginText = this.translateService.instant('LOGINTEXT');
     });
     this.translateService.get('WAIT').subscribe((res: string) => {
       this.waitMessage = res;
     });
     this.translateService.get('LOGIN').subscribe((res: string) => {
       this.loginButtonTitle = res;
+    });
+    this.translateService.get('LOGINTEXT').subscribe((res: string) => {
+      this.loginText = res;
     });
   }
 }
