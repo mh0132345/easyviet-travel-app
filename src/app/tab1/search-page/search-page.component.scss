@@ -1,11 +1,6 @@
 .combo-title {
-  font-family: BeVietnam;
   font-size: 17px;
   font-weight: 600;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: normal;
-  letter-spacing: normal;
   color: #021329;
 }
 
@@ -18,7 +13,7 @@
 img {
   width: 335px;
   height: 177px;
-  border-radius: 7px;
+  border-radius: 7px 7px 0px 0px;
 }
 
 ion-searchbar {
@@ -26,19 +21,12 @@ ion-searchbar {
 }
 
 .book-button {
-  width: 127px;
-  height: 38px;
+  height: 5vh;
   border-radius: 7px;
 }
 
 .border {
-  font-family: BeVietnam;
   font-size: 11px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: normal;
-  letter-spacing: normal;
   color: #1757a8;
   margin: 4px;
   --border-radius: 7px;

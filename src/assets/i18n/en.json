@@ -55,10 +55,7 @@
     "ERROR": "Error",
     "ERRORMESSAGE": "Sorry, something went wrong. Try again!",
     "LOGIN": "LOG IN WITH",
-<<<<<<< HEAD
-    "LOGINTEXT": "Simple - Convenient"
-=======
+    "LOGINTEXT": "Simple - Convenient",
     "PERSON": "person",
     "BOOKNOW": "BOOK NOW"
->>>>>>> 3043f4e5ab127692cd0211efa8f68e16b36fd53d
 }
