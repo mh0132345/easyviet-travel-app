@@ -7,9 +7,10 @@
 <ion-content>
   <ion-grid>
     <div *ngIf="!loadedFavCombos || loadedFavCombos.length <= 0">
-      <ion-row>
+      <ion-row class="non-fav">
         <ion-col size="6" offset="3">
-          <ion-label>{{ noFavNotice }}</ion-label>
+          <ion-img src="../../assets/Illustrations/undraw_travel_mode_7sf4.svg"></ion-img>
+          <ion-label class="non-fav-title">{{ noFavNotice }}</ion-label>
         </ion-col>
       </ion-row>
       <ion-row>
