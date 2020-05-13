@@ -45,7 +45,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
   }
 
   search() {
-    if (this.searchInput === '') {
+    if (!this.searchInput || this.searchInput === '') {
       this.loadedCombos = this.allCombos;
     } else {
       this.comboService.findCombo(this.searchInput).subscribe(combos => {
