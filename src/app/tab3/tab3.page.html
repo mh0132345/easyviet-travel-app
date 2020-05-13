@@ -9,8 +9,9 @@
 <ion-content padding>
   <ion-grid>
     <div *ngIf="!loadedTickets || loadedTickets.length <= 0">
-      <ion-row>
+      <ion-row class="non-ticket">
         <ion-col size="6" offset="3">
+          <ion-img src="../../assets/Illustrations/undraw_moments_0y20.svg"></ion-img>
           <ion-label>{{ noTicketNotice }}</ion-label>
         </ion-col>
       </ion-row>
@@ -58,7 +59,7 @@
                 </ionic5-star-rating>
                 {{ ticket.rate }} / 5
               </ion-card-subtitle>
-              <ion-card-title> {{ ticket.title }}</ion-card-title>
+              <ion-card-title style="font-size: 20px;"> {{ ticket.title }}</ion-card-title>
               <ion-card-subtitle>
                 <ion-icon name="time-outline" color="primary"></ion-icon>
                 {{ ticket.startDate * 1000 | date:'dd/MM/yyyy' }}
@@ -73,7 +74,8 @@
               </ion-card-subtitle>
               <ion-button 
                 expand="full" 
-                shape="round" 
+                shape="round"
+                style="margin-top: 10px;"
                 class="ion-text-center"> 
                 {{ appliedMessage }}
               </ion-button>
