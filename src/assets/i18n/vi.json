@@ -55,5 +55,10 @@
     "ERROR": "Lỗi",
     "ERRORMESSAGE": "Đã xảy ra lỗi. Làm ơn thử lại",
     "LOGIN": "ĐĂNG NHẬP VỚI",
+<<<<<<< HEAD
     "LOGINTEXT": "Đơn giản - Tiện lợi"
+=======
+    "PERSON": "người",
+    "BOOKNOW": "ĐẶT NGAY"
+>>>>>>> 3043f4e5ab127692cd0211efa8f68e16b36fd53d
 }
