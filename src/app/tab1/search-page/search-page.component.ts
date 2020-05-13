@@ -5,6 +5,7 @@ import { LoadingController, ToastController, ModalController } from '@ionic/angu
 import { Combo } from '../combo.model';
 import { Subscription } from 'rxjs';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-search-page',
@@ -20,6 +21,13 @@ export class SearchPageComponent implements OnInit, OnDestroy {
   waitMessage: string;
   addFavMessage: string;
   searchMessage: string;
+  freeWifiTitle: string;
+  hotelTitle: string;
+  breakfastTitle: string;
+  taxiTitle: string;
+  bookButtonTitle: string;
+  starTitle: string;
+  personTitle: string;
 
   constructor(
     private comboService: ComboService,
@@ -28,6 +36,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     private toastCtrl: ToastController,
     private modalCtrl: ModalController,
     private translateService: TranslateService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -73,11 +82,16 @@ export class SearchPageComponent implements OnInit, OnDestroy {
       });
   }
 
+  onBookingCombo(comboId: string) {
+    this.router.navigate(['tabs', 'tab1', 'combo-detail', comboId]);
+    this.closeModal();
+  }
+
   closeModal() {
     this.modalCtrl.dismiss();
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
     this._initialiseTranslation();
   }
 
@@ -86,6 +100,13 @@ export class SearchPageComponent implements OnInit, OnDestroy {
       this.addFavMessage = this.translateService.instant('ADDFAV');
       this.waitMessage = this.translateService.instant('WAIT');
       this.searchMessage = this.translateService.instant('SEARCH');
+      this.freeWifiTitle = this.translateService.instant('FREEWIFI');
+      this.hotelTitle = this.translateService.instant('HOTEL');
+      this.breakfastTitle = this.translateService.instant('BREAKFAST');
+      this.taxiTitle = this.translateService.instant('TAXI');
+      this.bookButtonTitle = this.translateService.instant('BOOKNOW');
+      this.starTitle = this.translateService.instant('STAR');
+      this.personTitle = this.translateService.instant('PERSON');
     });
     this.translateService.get('ADDFAV').subscribe((res: string) => {
       this.addFavMessage = res;
@@ -95,6 +116,27 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     });
     this.translateService.get('SEARCH').subscribe((res: string) => {
       this.searchMessage = res;
+    });
+    this.translateService.get('FREEWIFI').subscribe((res: string) => {
+      this.freeWifiTitle = res;
+    });
+    this.translateService.get('HOTEL').subscribe((res: string) => {
+      this.hotelTitle = res;
+    });
+    this.translateService.get('BREAKFAST').subscribe((res: string) => {
+      this.breakfastTitle = res;
+    });
+    this.translateService.get('TAXI').subscribe((res: string) => {
+      this.taxiTitle = res;
+    });
+    this.translateService.get('BOOKNOW').subscribe((res: string) => {
+      this.bookButtonTitle = res;
+    });
+    this.translateService.get('STAR').subscribe((res: string) => {
+      this.starTitle = res;
+    });
+    this.translateService.get('PERSON').subscribe((res: string) => {
+      this.personTitle = res;
     });
   }
 }
