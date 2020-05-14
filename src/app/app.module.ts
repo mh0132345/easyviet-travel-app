@@ -16,7 +16,6 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { environment } from '../environments/environment';
 import { Facebook } from '@ionic-native/facebook/ngx';
 import * as firebase from 'firebase/app';
-import { PayPal } from '@ionic-native/paypal/ngx';
 import { TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
@@ -51,7 +50,6 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   providers: [
     Facebook,
-    PayPal,
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

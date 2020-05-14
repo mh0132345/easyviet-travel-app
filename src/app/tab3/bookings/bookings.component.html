@@ -96,18 +96,7 @@
             <ion-label> {{ totalPrice }}đ</ion-label>
           </ion-col>
         </ion-row>
-        <ion-list>
-          <ion-button expand="block" (click)="payWithPaypal()">
-            <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/pp-acceptance-large.png" alt="Buy now with PayPal" />
-            Paypal Mobile (for test)
-          </ion-button>
-          <ion-button expand="block" (click)="next()">
-            {{ paymentTitle }} (for test)
-          </ion-button>
-        </ion-list>
-        <ion-footer>
-          <ngx-paypal [config]="payPalConfig"></ngx-paypal>
-        </ion-footer>
+        <ngx-paypal [config]="payPalConfig"></ngx-paypal>
       </ion-grid>
     </ion-slide>
   </ion-slides>

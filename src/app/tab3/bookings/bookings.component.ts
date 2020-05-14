@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController, IonSlides, Platform, AlertController } from '@ionic/angular';
 import { Combo } from '../../tab1/combo.model';
-import { PayPal, PayPalPayment, PayPalConfiguration } from '@ionic-native/paypal/ngx';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 
@@ -51,7 +50,6 @@ export class BookingsComponent implements OnInit {
   constructor(
     private modalCtrl: ModalController,
     public formBuilder: FormBuilder,
-    private payPal: PayPal,
     private translateService: TranslateService,
     private platform: Platform,
     private alertController: AlertController,
@@ -150,57 +148,6 @@ export class BookingsComponent implements OnInit {
     }
     this.totalPrice = this.selectedCombo.price * this.numOfTickets - this.discount;
     this.initConfig(this.selectedCombo.price);
-  }
-
-  payWithPaypal() {
-    const sandBoxClientId = 'AU2oJ_5sjp1cSi5NmPRCN5JhizNgrxw6vTXQxa0fGFH73WVgsfjDs_eBC_HAmJ7lDS6wT5E1nzgvMIbF';
-    const totalPrice = this.totalPrice * this.currencyConvertRate;
-    this.payPal.init({
-      PayPalEnvironmentProduction: 'YOUR_PRODUCTION_CLIENT_ID',
-      PayPalEnvironmentSandbox: sandBoxClientId
-    }).then(() => {
-      // Environments: PayPalEnvironmentNoNetwork, PayPalEnvironmentSandbox, PayPalEnvironmentProduction
-      this.payPal.prepareToRender('PayPalEnvironmentSandbox', new PayPalConfiguration({
-        // Only needed if you get an "Internal Service Error" after PayPal login!
-        // payPalShippingAddressOption: 2 // PayPalShippingAddressOptionPayPal
-      })).then(() => {
-        const payment = new PayPalPayment(totalPrice.toFixed(2), this.currency, 'Description', 'sale');
-        console.log(payment);
-        this.payPal.renderSinglePaymentUI(payment).then((res) => {
-          if (res.response.state === 'approved') {
-            this.onBookCombo();
-          }
-          // Successfully paid
-
-          // Example sandbox response
-          //
-          // {
-          //   "client": {
-          //     "environment": "sandbox",
-          //     "product_name": "PayPal iOS SDK",
-          //     "paypal_sdk_version": "2.16.0",
-          //     "platform": "iOS"
-          //   },
-          //   "response_type": "payment",
-          //   "response": {
-          //     "id": "PAY-1AB23456CD789012EF34GHIJ",
-          //     "state": "approved",
-          //     "create_time": "2016-10-03T13:33:33Z",
-          //     "intent": "sale"
-          //   }
-          // }
-        }, () => {
-          // Error or render dialog closed without being successful
-          this.presentAlert(this.failMessage, this.errorMessage);
-        });
-      }, () => {
-        // Error in configuration
-        console.log('Error in configuration');
-      });
-    }, () => {
-      // Error in initialization, maybe PayPal isn't supported or something else
-      console.log('Error in initialization');
-    });
   }
 
   async presentAlert(header: string, message: string) {
